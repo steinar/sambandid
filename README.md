@@ -1,4 +1,4 @@
-# Sambandið - bjórvinafélag Gagnavörslunnar
+# Sambandið - kókvinafélag Gagnavörslunnar
 
 **Byltingin er hafin** - *Steinar Hugi Sigurðarson, júní 2012*
 
