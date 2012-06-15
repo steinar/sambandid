@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>mmmm bjór</h1>
+<p><a href="/beer/add">Skrá bjór</a></p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Nafn</td>
+            <td>Verð</td>
+        </tr>
+    </thead>
+    <tbody>
+    {% for beer in beers %}
+            <tr>
+                <td>{{ beer.name }}</td>
+                <td>{{ beer.price }} ISK</td>
+            </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

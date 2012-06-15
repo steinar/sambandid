@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>Bjór bjór bjór</h1>
+
+{% from "_forms.html" import render_field %}
+<form method=post action="">
+    <dl>
+        {{ render_field(form.name) }}
+        {{ render_field(form.price) }}
+    </dl>
+    <p><input type=submit value=Register>
+</form>
+{% endblock %}
