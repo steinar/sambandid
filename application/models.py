@@ -34,6 +34,9 @@ class User(db.Model):
             db.session.commit()
         return user
 
+    def as_dict(self):
+        return {'id': self.id, 'name': self.name, 'username': self.username, 'email': self.email}
+
 class Beer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))

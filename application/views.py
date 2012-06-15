@@ -35,7 +35,7 @@ def facebook_authorized(resp):
             )
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me')
-    session['user'] = User.from_facebook(me)
+    session['user'] = User.from_facebook(me).as_dict()
     return redirect('/')
     return 'Logged in as id=%s name=%s redirect=%s' %\
            (me.data['id'], me.data['name'], request.args.get('next'))
