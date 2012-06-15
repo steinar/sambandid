@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from flask import session
 from flask.globals import request
 from flask.helpers import flash, url_for
@@ -6,6 +7,7 @@ from flask.templating import render_template
 from flask.views import View, MethodView
 from werkzeug.utils import redirect
 from application import app, facebook
+from flask import send_from_directory
 
 
 # Your main views may be here. In fact, all of your views may be here
@@ -92,3 +94,8 @@ class BeersView(View):
 
 
 app.add_url_rule('/beers', view_func=BeersView.as_view('beers'))
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static/img'),
+           'favicon.ico', mimetype='image/vnd.microsoft.icon')
