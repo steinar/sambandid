@@ -14,11 +14,10 @@ class User(db.Model):
     registration_date = db.Column(db.DateTime)
 
 
-    def __init__(self, name, username, email, password):
+    def __init__(self, name, username, email):
         self.name = name
         self.username = username
         self.email = email
-        self.password = password
 
         self.registration_date = datetime.utcnow()
 
@@ -26,6 +25,14 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+    @classmethod
+    def from_facebook(cls, me):
+        user = User.query.filter_by(username=me.data['username']).first()
+        if not user:
+            user = User(me.data['name'], me.data['username'], me.data['email'])
+            db.session.add(user)
+            db.session.commit()
+        return user
 
 class Beer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +49,7 @@ class Beer(db.Model):
 
     def __repr__(self):
         return '<Beer %r>' % self.name
+
 
 
 class Purchase(db.Model):
