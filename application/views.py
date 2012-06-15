@@ -16,7 +16,7 @@ from application import app, facebook
 # If not - please, visit http://flask.pocoo.org/docs/views/
 from application.database import db
 from application.forms import RegistrationForm, BeerForm
-from application.models import Beer
+from application.models import Beer, User
 
 @app.route('/login')
 def login():
@@ -35,8 +35,17 @@ def facebook_authorized(resp):
             )
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me')
+    session['user'] = User.from_facebook(me)
+    return redirect('/')
     return 'Logged in as id=%s name=%s redirect=%s' %\
            (me.data['id'], me.data['name'], request.args.get('next'))
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    session.pop('oauth_token', None)
+    flash('You were signed out')
+    return redirect(request.referrer or url_for('index'))
 
 
 @facebook.tokengetter
@@ -48,7 +57,6 @@ class MainPageView(View):
         form = RegistrationForm()
         token = get_facebook_oauth_token()
         return render_template('main.html', form=form, token=token)
-
 app.add_url_rule('/', view_func=MainPageView.as_view('main_page'))
 
 class RegisterView(View):
@@ -71,7 +79,7 @@ class BeerAddView(MethodView):
         db.session.add(beer)
         db.session.commit()
         flash('Saved')
-        return redirect(url_for("main_page"))
+        return redirect(url_for("beers"))
 
 
 app.add_url_rule('/beer/add', view_func=BeerAddView.as_view('beer_add'))

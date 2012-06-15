@@ -35,16 +35,21 @@
             </a>
             <a class="brand" href="#">Sambandið</a>
             <div class="btn-group pull-right">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-user"></i> Username
+                {% if session.user %}
+                <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="icon-user"></i> {{ session.user.name }}
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Profile</a></li>
                     <li class="divider"></li>
-                    <li>{{ token }}</li>
-                    <li><a href="#">Sign Out</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
+                {% else %}
+                <a class="btn btn-danger" href="/login" data-toggle="dropdown" href="#">
+                    <i class="icon-user"></i> Smelltu til að innskrá þig með Fésbókinni
+                </a>
+                {% endif %}
             </div>
             <div class="nav-collapse">
                 <ul class="nav">
@@ -60,18 +65,14 @@
 <div class="container">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <ul class=flashes>
         {% for message in messages %}
-        <li>{{ message }}</li>
+        <div class="alert alert-info">{{ message }}</div>
         {% endfor %}
-    </ul>
     {% endif %}
     {% endwith %}
     {% block content %}
     <h1>Velkominn á vef Sambandsins</h1>
     <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
-
-    {% include 'register_form_snippet.html' %}
     {% endblock %}
 
 </div> <!-- /container -->

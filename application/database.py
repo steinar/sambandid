@@ -14,10 +14,15 @@
 # define `db` object like this and use it wherever you need
 
 from flask.ext.sqlalchemy import SQLAlchemy
+import os
 from application import app
+from settings import DB_PATH
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DB_PATH
 db = SQLAlchemy(app)
+#
+#if not os.path.exists(DB_PATH):
+#    db.create_all()
 
 
 #db = MongoAlchemy(app)

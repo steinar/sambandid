@@ -28,6 +28,8 @@ class DevelopmentConfig(BaseConfig):
 # Flask Kit helpers will look for app object in it.
 APP_PACKAGE = 'application'
 
+DB_PATH = '/tmp/test.db'
+
 
 # If you will use some blueprints in your project (and you have to), register
 # them in INSTALLED_BLUEPRINTS list. For example, if you have blueprint object
