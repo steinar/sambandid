@@ -1,6 +1,6 @@
 # Sambandið - bjórvinafélag Gagnavörslunnar
 
-**Byltingin er hafin** - *Steinar Hugi Sigurðsson, júní 2012*
+**Byltingin er hafin** - *Steinar Hugi Sigurðarson, júní 2012*
 
 ## Til hvers er kerfið?
 
