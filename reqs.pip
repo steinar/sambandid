@@ -14,3 +14,4 @@ httplib2==0.7.4
 ipython==0.12
 oauth2==1.5.211
 wsgiref==0.1.2
+WTAlchemy==0.1b3

@@ -1,18 +1,34 @@
 # -*- coding: utf-8 -*-
+import math
+import os
+from sqlalchemy.exc import OperationalError
 
 from application.database import db
 from datetime import datetime
 # Put your main models here
+from settings import DB_PATH
 
-class User(db.Model):
+class SaveMixIn(object):
+    def save(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except OperationalError, e:
+            db.session.rollback()
+            raise RuntimeError(e)
+
+
+class User(SaveMixIn, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
+    account_status = db.Column(db.Integer)
 
     registration_date = db.Column(db.DateTime)
-
+    is_admin = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean, default=True)
 
     def __init__(self, name, username, email):
         self.name = name
@@ -25,6 +41,9 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+    def __unicode__(self):
+        return self.name
+
     @classmethod
     def from_facebook(cls, me):
         user = User.query.filter_by(username=me.data['username']).first()
@@ -34,10 +53,16 @@ class User(db.Model):
             db.session.commit()
         return user
 
-    def as_dict(self):
-        return {'id': self.id, 'name': self.name, 'username': self.username, 'email': self.email}
+    def update_account_status(self):
+        amounts = map(lambda t: t.amount, Transaction.query.filter_by(user=self).all())
+        self.account_status = sum(amounts) if amounts else 0
+        self.save()
 
-class Beer(db.Model):
+    def as_dict(self):
+        return {'id': self.id, 'name': self.name, 'username': self.username, 'email': self.email, \
+                'account_status': self.account_status }
+
+class Beer(SaveMixIn, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
     price = db.Column(db.Integer)
@@ -53,29 +78,45 @@ class Beer(db.Model):
     def __repr__(self):
         return '<Beer %r>' % self.name
 
+    def __unicode__(self):
+        return unicode("%s (%s)" % (self.name,self.price))
 
 
-class Purchase(db.Model):
+
+class Transaction(SaveMixIn, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     registered_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    user = db.relationship('User', backref='purchases', lazy='dynamic', primaryjoin='User.id==Purchase.user_id')
-    registered_by = db.relationship('User', backref='registrations', lazy='dynamic', primaryjoin='User.id==Purchase.registered_by_id')
+    user = db.relationship('User', backref='transations', lazy='immediate', primaryjoin='User.id==Transaction.user_id')
+    registered_by = db.relationship('User', backref='registrations', lazy='immediate', primaryjoin='User.id==Transaction.registered_by_id')
 
-    beer_id = db.Column(db.Integer, db.ForeignKey('beer.id'))
-    beer = db.relationship('Beer', backref='purchases', lazy='dynamic')
+    beer_id = db.Column(db.Integer, db.ForeignKey('beer.id'), nullable=True)
+    beer = db.relationship('Beer', backref='transations', lazy='immediate')
 
-    purchase_date = db.Column(db.DateTime)
+    amount = db.Column(db.Integer, default=0)
 
-    def __init__(self, user, registered_by, beer):
-        self.user = [user]
-        self.registered_by = [registered_by]
-        self.beer = [beer]
+    comment = db.Column(db.Unicode)
 
-        self.purchase_date = datetime.utcnow()
+    transaction_date = db.Column(db.DateTime)
+
+    def __init__(self, user=None, registered_by=None, beer=None, amount=None):
+        self.user = user
+        self.registered_by = registered_by
+        self.beer = beer
+        self.amount = beer and beer.price and -beer.price or amount or None
+        self.transaction_date = datetime.utcnow()
 
 
+    def __repr__(self):
+        return '<Transaction %s, %s, %s, %s>' % (self.user, self.registered_by, self.beer, self.amount)
+
+    def __unicode__(self):
+        return unicode(self.transaction_date)
+
+
+#if not os.path.exists(DB_PATH):
+db.create_all()
 
 

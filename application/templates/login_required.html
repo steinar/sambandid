@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="hero-unit">
+    <h1>Jæks</h1>
+    <p>Þú ert ekki innskráður notandi.</p>
+    <p>
+        <a class="btn btn-primary btn-large" href="{{url_for('login')}}" data-toggle="dropdown" href="#">
+            <i class="icon-user"></i> Smelltu hér til að bjarga því
+        </a>
+    </p>
+</div>
+{% endblock %}

@@ -9,6 +9,7 @@
     :copyright: (c) 2012 by Roman Semirook.
     :license: BSD, see LICENSE for more details.
 """
+import os
 
 class BaseConfig(object):
     """Base config class"""
@@ -28,7 +29,10 @@ class DevelopmentConfig(BaseConfig):
 # Flask Kit helpers will look for app object in it.
 APP_PACKAGE = 'application'
 
-DB_PATH = '/tmp/test.db'
+DB_PATH = '%s/sambandid.db' % os.path.dirname(os.path.abspath(__file__))
+
+SECRET_KEY = 'mmmmm bjor'
+
 
 
 # If you will use some blueprints in your project (and you have to), register

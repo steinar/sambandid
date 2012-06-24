@@ -4,11 +4,11 @@
 <h1>Bjór bjór bjór</h1>
 
 {% from "_forms.html" import render_field %}
-<form method=post action="">
+<form method="post" action="">
     <dl>
         {{ render_field(form.name) }}
         {{ render_field(form.price) }}
     </dl>
-    <p><input type=submit value=Register>
+    <button class="btn">Skrá þennan á lagerinn</button>
 </form>
 {% endblock %}

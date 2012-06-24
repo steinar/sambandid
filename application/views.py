@@ -9,16 +9,29 @@ from werkzeug.utils import redirect
 from application import app, facebook
 from flask import send_from_directory
 
-
-# Your main views may be here. In fact, all of your views may be here
-# if you don't use blueprints and your site is really micro.
-
-# In this example we use so called `Pluggable Views` or `Class Based Views`.
-# You should be familiar with them if you already had some experience with Django.
-# If not - please, visit http://flask.pocoo.org/docs/views/
 from application.database import db
-from application.forms import RegistrationForm, BeerForm
-from application.models import Beer, User
+from application.forms import RegistrationForm, BeerForm, BeerTransactionForm, DepositTransactionForm
+from application.models import Beer, User, Transaction
+
+# Helper functions
+
+def get_user_object(username=None):
+    username = username or 'user' in session and session['user']['username']
+    if username:
+        return User.query.filter_by(username=username).first()
+    return None
+
+
+def require_login(func):
+    def f(*args,**kwargs):
+        if not 'user' in session:
+            return redirect(url_for("login-required"))
+        return func(*args,**kwargs)
+    f.__name__ = func.__name__
+    return f
+
+
+# Authentication
 
 @app.route('/login')
 def login():
@@ -39,13 +52,13 @@ def facebook_authorized(resp):
     me = facebook.get('/me')
     session['user'] = User.from_facebook(me).as_dict()
     return redirect('/')
-    return 'Logged in as id=%s name=%s redirect=%s' %\
-           (me.data['id'], me.data['name'], request.args.get('next'))
+
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
     session.pop('oauth_token', None)
+    session.pop('_flashes', None)
     flash('You were signed out')
     return redirect(request.referrer or url_for('index'))
 
@@ -54,26 +67,49 @@ def logout():
 def get_facebook_oauth_token():
     return session.get('oauth_token')
 
-class MainPageView(View):
+
+class LoginRequriedView(View):
     def dispatch_request(self):
-        form = RegistrationForm()
-        token = get_facebook_oauth_token()
-        return render_template('main.html', form=form, token=token)
-app.add_url_rule('/', view_func=MainPageView.as_view('main_page'))
+        return render_template('login_required.html')
+app.add_url_rule('/login-required', view_func=LoginRequriedView.as_view('login-required'))
+
 
 class RegisterView(View):
     def dispatch_request(self):
         form = RegistrationForm()
         return render_template('register.html', form=form)
 
-# Good style is to place your view URL rules right after the view definition.
 app.add_url_rule('/register', view_func=RegisterView.as_view('register'))
 
+
+# Front page
+
+@app.route('/')
+def index():
+    form = RegistrationForm()
+    token = get_facebook_oauth_token()
+    user = get_user_object()
+    if 'user' in session and not user:
+        return redirect('logout')
+    return render_template('main.html', form=form, token=token, user=user and user.as_dict())
+
+
+
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static/img'),
+        'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+# Beer!
+
 class BeerAddView(MethodView):
+    @require_login
     def get(self):
         form = BeerForm()
         return render_template('beer_form.html', form=form)
 
+
+    @require_login
     def post(self):
         form = BeerForm(request.form)
         beer = Beer()
@@ -83,19 +119,57 @@ class BeerAddView(MethodView):
         flash('Saved')
         return redirect(url_for("beers"))
 
-
 app.add_url_rule('/beer/add', view_func=BeerAddView.as_view('beer_add'))
 
 
-class BeersView(View):
-    def dispatch_request(self):
-        beers = Beer.query.all()
-        return render_template('beers.html', beers=beers)
+@app.route('/beers')
+def beers():
+    beers = Beer.query.all()
+    return render_template('beers.html', beers=beers)
+
+# Transactions
+
+@app.route('/transactions')
+@require_login
+def transactions():
+    user = get_user_object()
+    transactions_by_me = Transaction.query.filter_by(registered_by=user)
+    my_transactions = Transaction.query.filter_by(user=user)
+    account_status = user.account_status
+    return render_template('transactions.html', transactions_by_me=transactions_by_me, \
+        my_transactions=my_transactions, account_status=account_status)
 
 
-app.add_url_rule('/beers', view_func=BeersView.as_view('beers'))
+@app.route('/transaction/<int:beer_id>')
+@require_login
+def beer_transaction(beer_id):
+    beer = Beer.query.filter_by(id=beer_id).first()
+    initial = Transaction(user=get_user_object(), beer=beer)
+    beer_form = BeerTransactionForm(obj=initial)
+    return render_template('transaction_form.html', beer_form=beer_form, deposit_form=None)
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static/img'),
-           'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+class TransactionRegistrationView(MethodView):
+    @require_login
+    def get(self):
+        initial = Transaction(user=get_user_object(), amount=None)
+        beer_form = BeerTransactionForm(obj=initial)
+        deposit_form = DepositTransactionForm(obj=initial)
+        return render_template('transaction_form.html', beer_form=beer_form, deposit_form=deposit_form)
+
+    @require_login
+    def post(self):
+        if not request.form or (not 'beer' in request.form and not 'deposit' in request.form):
+            return redirect(url_for("transaction-add"))
+
+        form_cls = BeerTransactionForm if 'beer' in request.form else DepositTransactionForm
+        form = form_cls(request.form)
+        transaction = Transaction(**form.data)
+        transaction.registered_by = get_user_object()
+        transaction.save()
+        user = get_user_object()
+        user.update_account_status()
+        flash(unicode('Færslan hefur verið bókfærð. Þakka þér, meistari.', 'utf-8'))
+        return redirect(url_for("transactions"))
+
+app.add_url_rule('/transactions/add', view_func=TransactionRegistrationView.as_view('transaction_add'))

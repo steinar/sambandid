@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <h1>Staðan mín</h1>
+    {% if account_status == None %}
+    <div class="alert alert-info">
+        Sambandsstaða þín er hvorki góð né slæm. Hún er alls engin.
+    </div>
+    {% else %}
+    <div class="alert {% if account_status > 0 %}alert-success{% elif account_status < 0 %}alert-warning{% else %}alert-info{% endif %}">
+        Sambandsstaða þín er <strong>{{account_status}} ISK</strong>
+    </div>
+    {% endif %}
+
+    <h1>Færslur</h1>
+
+    {% with %}
+        {% set transactions = my_transactions %}
+        {% include 'transactions_snippet.html' %}
+    {% endwith %}
+
+    {% with %}
+        {% set transactions = transactions_by_me %}
+        {% include 'transactions_by_me_snippet.html' %}
+    {% endwith %}
+
+{% endblock %}

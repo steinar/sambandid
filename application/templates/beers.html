@@ -1,10 +1,10 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h1>mmmm bjór</h1>
+<h1>Lagerinn</h1>
 
 <div class="btn-group">
-    <a class="btn" href="/beer/add">Skrá nýjan bjór</a>
+    <a class="btn" href="{{url_for('beer_add')}}">Skrá nýjan bjór</a>
 </div>
 <table class="table table-striped">
     <thead>
@@ -18,6 +18,10 @@
             <tr>
                 <td>{{ beer.name }}</td>
                 <td>{{ beer.price }} ISK</td>
+                <td>
+                    <a href="{{url_for('beer_transaction', beer_id=beer.id)}}" class="btn btn-mini">Skrá þennan</a>
+                    
+                </td>
             </tr>
     {% endfor %}
     </tbody>

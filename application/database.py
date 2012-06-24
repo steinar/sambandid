@@ -20,9 +20,6 @@ from settings import DB_PATH
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DB_PATH
 db = SQLAlchemy(app)
-#
-#if not os.path.exists(DB_PATH):
-#    db.create_all()
 
 
 #db = MongoAlchemy(app)

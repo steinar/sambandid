@@ -33,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#">Sambandið</a>
+            <a class="brand" href="/">Sambandið</a>
             <div class="btn-group pull-right">
                 {% if session.user %}
                 <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
@@ -41,21 +41,22 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Profile</a></li>
+                    <li><a href="{{url_for('transactions')}}">Profile</a></li>
                     <li class="divider"></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="{{url_for('logout')}}">Logout</a></li>
                 </ul>
                 {% else %}
-                <a class="btn btn-danger" href="/login" data-toggle="dropdown" href="#">
+                <a class="btn btn-primary" href="{{url_for('login')}}" data-toggle="dropdown" href="#">
                     <i class="icon-user"></i> Smelltu til að innskrá þig með Fésbókinni
                 </a>
                 {% endif %}
             </div>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="/beers">Bjór!</a></li>
-                    <li><a href="#contact">Mixa</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{{url_for('beers')}}">Bjór!</a></li>
+                    <li><a href="{{url_for('transaction_add')}}">Bókfæra</a></li>
+                    <li><a href="{{url_for('transactions')}}">Færsluyfirlit</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -64,17 +65,33 @@
 
 <div class="container">
     {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-info">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">
+                    <a class="close" data-dismiss="alert" href="#">×</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
-    {% block content %}
-    <h1>Velkominn á vef Sambandsins</h1>
-    <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
-    {% endblock %}
 
+    {% block content %}
+    <div class="span8">
+        <h1>Velkominn á vef Sambandsins</h1>
+        <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
+
+
+        {% if user %}
+            {% include 'user_workspace.html' %}
+        {% endif %}
+
+        <h2>Stjörnusambandsstöð</h2>
+        <object width="460" height="100"><param name="movie" value="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" /><param name="allowscriptaccess" value="always" /><embed src="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" type="application/x-shockwave-flash" allowscriptaccess="always" width="460" height="100" /></object>
+    </div>
+    <div class="span2">
+        <img src="{{ url_for('static', filename="img/sambandid.png") }}" width="200" height="200"/>
+    </div>
+    {% endblock %}
 </div> <!-- /container -->
 
 <!-- Le javascript

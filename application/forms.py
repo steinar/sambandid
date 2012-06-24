@@ -1,6 +1,10 @@
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
+# -*- coding: utf-8 -*-
+
+from wtforms import TextField, PasswordField, validators, IntegerField
+from wtforms.ext.sqlalchemy.orm import Form
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.ext.appengine.db import model_form
-from application.models import Beer
+from application.models import Beer, User
 
 class RegistrationForm(Form):
     user = TextField('Username', [validators.Length(min=2, max=35)])
@@ -17,3 +21,12 @@ class BeerForm(Form):
     name = TextField('Name', [validators.Length(min=2, max=80)])
     price = TextField('Price')
 
+
+class BeerTransactionForm(Form):
+    user = QuerySelectField(label='Member', query_factory=lambda: User.query.all())
+    beer = QuerySelectField(label='Beer', query_factory=lambda: Beer.query.all())
+
+
+class DepositTransactionForm(Form):
+    user = QuerySelectField(label='Member', query_factory=lambda: User.query.all())
+    amount = IntegerField('Amount')

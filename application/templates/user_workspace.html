@@ -1,0 +1,13 @@
+<h2>Staðan þín, kæri vinur</h2>
+{% with %}
+    {% set account_status = user.account_status %}
+    {% if account_status == None %}
+        <div class="alert alert-info">
+        Sambandsstaða þín er hvorki góð né slæm. Hún er alls engin.
+        </div>
+    {% else %}
+        <div class="alert {% if account_status > 0 %}alert-success{% elif account_status < 0 %}alert-warning{% else %}alert-info{% endif %}">
+            Sambandsstaða þín er <strong>{{account_status}} ISK</strong>
+        </div>
+    {% endif %}
+{%endwith %}
