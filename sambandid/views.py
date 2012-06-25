@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
+from flaskext.uploads import IMAGES, UploadSet
 import os
 from flask import session
 from flask.globals import request
 from flask.helpers import flash, url_for
 from flask.templating import render_template
 from flask.views import View, MethodView
-from werkzeug.utils import redirect
+from werkzeug.utils import redirect, secure_filename
 from flask import send_from_directory
 
-from sambandid import app, facebook
+from sambandid import app, facebook, photos
 from sambandid.database import db
 from sambandid.forms import BeerForm, BeerTransactionForm, DepositTransactionForm
 from sambandid.models import Beer, User, Transaction
@@ -93,6 +94,10 @@ def favicon():
 
 # Beer!
 
+def allowed_file(filename):
+    return '.' in filename and\
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 class BeerAddView(MethodView):
     @require_login
     def get(self):
@@ -104,6 +109,9 @@ class BeerAddView(MethodView):
     def post(self):
         form = BeerForm(request.form)
         beer = Beer()
+        print request.files
+        if 'image' in request.files:
+            beer.image_path = photos.save(request.files['image'])
         form.populate_obj(beer)
         db.session.add(beer)
         db.session.commit()

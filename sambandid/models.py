@@ -2,6 +2,7 @@
 import math
 import os
 from sqlalchemy.exc import OperationalError
+from sambandid import photos
 
 from sambandid.database import db
 from datetime import datetime
@@ -66,6 +67,7 @@ class Beer(SaveMixIn, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
     price = db.Column(db.Integer)
+    image_path = db.Column(db.String(250))
     add_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
 
@@ -74,6 +76,11 @@ class Beer(SaveMixIn, db.Model):
         self.price = price
         self.add_date = datetime.utcnow()
 
+    @property
+    def image_url(self):
+        if not self.image_path:
+            return None
+        return photos.url(self.image_path)
 
     def __repr__(self):
         return '<Beer %r>' % self.name

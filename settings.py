@@ -25,6 +25,9 @@ CONTEXT_PROCESSORS = ['sambandid.context_processors.my_email']
 FACEBOOK_APP_ID = '475817332444834'
 FACEBOOK_APP_SECRET = ''
 
+UPLOADS_DEFAULT_DEST = 'sambandid/static/data'
+UPLOADS_DEFAULT_URL = '/static/data/'
+
 try:
     from private import *
 except ImportError:

@@ -9,6 +9,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <td></td>
             <td>Nafn</td>
             <td>Verð</td>
         </tr>
@@ -16,6 +17,10 @@
     <tbody>
     {% for beer in beers %}
             <tr>
+                <td>
+
+                    {% if beer.image_url %}<a href="#beer-{{beer.id}}" data-toggle="modal"><img src="{{ beer.image_url }}" height="50"></a>{% endif %}
+                </td>
                 <td>{{ beer.name }}</td>
                 <td>{{ beer.price }} ISK</td>
                 <td>
@@ -23,6 +28,17 @@
                     
                 </td>
             </tr>
+    {% endfor %}
+    {% for beer in beers %}
+    <div class="modal hide" id="beer-{{beer.id}}">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>{{beer.name}} - {{beer.price}} ISK</h3>
+        </div>
+        <div class="modal-body">
+            <p>{% if beer.image_url %}<img src="{{ beer.image_url }}">{% endif %}</p>
+        </div>
+    </div>
     {% endfor %}
     </tbody>
 </table>

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from flaskext.uploads import IMAGES, UploadSet, configure_uploads
 
 from kit.helpers import AppFactory
 from settings import DevelopmentConfig, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
@@ -23,6 +24,12 @@ facebook = oauth.remote_app('facebook',
     consumer_secret=FACEBOOK_APP_SECRET,
     request_token_params={'scope': 'email'}
 )
+
+app.config['UPLOADS_DEFAULT_DEST'] = settings.UPLOADS_DEFAULT_DEST
+app.config['UPLOADS_DEFAULT_URL'] = settings.UPLOADS_DEFAULT_URL
+
+photos = UploadSet('photos', IMAGES)
+configure_uploads(app, (photos,))
 
 # Application's views
 from sambandid.filters import *
