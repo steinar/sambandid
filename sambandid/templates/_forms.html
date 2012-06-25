@@ -1,12 +1,18 @@
-{% macro render_field(field) %}
-<dt>{{ field.label }}
-<dd>{{ field(**kwargs)|safe }}
-    {% if field.errors %}
-    <ul class=errors>
-        {% for error in field.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-</dd>
+{% macro render_field(field,post=None,pre=None,help=None) %}
+<div class="control-group">
+    <label class="control-label" for="{{ field.name }}">{{ field.label }}</label>
+    <div class="controls">
+        <div class="{% if pre %}input-prepend{% endif %} {% if post %}input-append{% endif %}">
+            {% if pre %}<span class="add-on">{{ pre }}</span>{% endif %}{{ field(**kwargs)|safe }}{% if post %}<span class="add-on">{{ post }}</span>{% endif %}
+            {% if help %}<span class="help-inline">{{ help }}</span>{% endif %}
+            {% if field.errors %}
+            <ul class=errors>
+                {% for error in field.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endmacro %}

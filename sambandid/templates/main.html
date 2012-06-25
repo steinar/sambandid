@@ -57,6 +57,17 @@
                     <li><a href="{{url_for('beers')}}">Bjór!</a></li>
                     <li><a href="{{url_for('transaction_add')}}">Bókfæra</a></li>
                     <li><a href="{{url_for('transactions')}}">Minn reikningur</a></li>
+                    <li class="dropdown">
+                        <a href="#"
+                           class="dropdown-toggle"
+                           data-toggle="dropdown">
+                            Umsýslan
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="" href="{{url_for('beer_add')}}">Skrá bjór</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
