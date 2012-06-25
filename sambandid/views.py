@@ -112,7 +112,6 @@ class BeerAddView(MethodView):
     def post(self):
         form = BeerForm(request.form)
         beer = Beer()
-        print request.files
         if 'image' in request.files and request.files['image']:
             beer.image_path = photos.save(request.files['image'])
         form.populate_obj(beer)
