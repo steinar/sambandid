@@ -14,7 +14,9 @@ class DevelopmentConfig(BaseConfig):
 
 APP_PACKAGE = 'sambandid'
 
-DB_PATH = '%s/sambandid.db' % os.path.dirname(os.path.abspath(__file__))
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+
+DB_PATH = '%s/sambandid.db' % BASE_PATH
 
 SECRET_KEY = 'mmmmm bjor'
 
@@ -25,7 +27,7 @@ CONTEXT_PROCESSORS = ['sambandid.context_processors.my_email']
 FACEBOOK_APP_ID = '475817332444834'
 FACEBOOK_APP_SECRET = ''
 
-UPLOADS_DEFAULT_DEST = 'sambandid/static/data'
+UPLOADS_DEFAULT_DEST = '%s/sambandid/static/data' % BASE_PATH
 UPLOADS_DEFAULT_URL = '/static/data/'
 
 try:
