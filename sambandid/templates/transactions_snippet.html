@@ -1,23 +1,21 @@
-<h2>Færslur í mínu nafni</h2>
-
 <table class="table table-striped">
     <thead>
     <tr>
-        <td>Dagsetning</td>
-        <td>Skráð á</td>
-        <td>Skráð af</td>
-        <td>Upphæð</td>
-        <td>Bjór</td>
+        <th>Dagsetning</th>
+        <th>Skráð á</th>
+        <th>Skráð af</th>
+        <th>Upphæð</th>
+        <th>Athugasemd</th>
     </tr>
     </thead>
     <tbody>
     {% for transaction in transactions %}
     <tr>
-        <td>{{ transaction.transaction_date }}</td>
+        <td>{{ transaction.transaction_date|datetimeformat }}</td>
         <td>{{ transaction.user }}</td>
         <td>{{ transaction.registered_by }}</td>
         <td>{{ transaction.amount }} ISK</td>
-        <td>{{ transaction.beer }} ISK</td>
+        <td>{{ transaction.beer or '' }} {{ transaction.comment or '' }}</td>
     </tr>
     {% endfor %}
     </tbody>

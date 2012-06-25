@@ -2,23 +2,28 @@
 {% from "_forms.html" import render_field %}
 
 {% block content %}
-<h1>Færa til bókar</h1>
-<h2>Bókfæra úttekt af lager Sambandsins</h2>
-<form method="post" action="{{url_for('transaction_add')}}">
-    <dl>
-        {{ render_field(beer_form.user) }}
-        {{ render_field(beer_form.beer) }}
-    </dl>
-    <p><button type="submit" name="beer" data   -loading-text="augnablik..." class="btn">Skrá drykkju</button></p>
-</form>
+<h1>Heiðarlega skal fært til bóka</h1>
+<div class="span5">
+    <h2>Úttektir</h2>
+    <form method="post" action="{{url_for('transaction_add')}}" class="well">
+        <dl>
+            {{ render_field(beer_form.user) }}
+            {{ render_field(beer_form.beer) }}
+        </dl>
+        <p><button type="submit" name="beer" data   -loading-text="augnablik..." class="btn">Skrá drykkju</button></p>
+    </form>
+</div>
 {% if deposit_form %}
-<h2>Bókfæra innlegg á sjóðsreikning</h2>
-<form method="post" action="{{url_for('transaction_add')}}">
-    <dl>
-        {{ render_field(deposit_form.user) }}
-        {{ render_field(deposit_form.amount) }}
-    </dl>
-    <p><button type="submit" data-loading-text="augnablik..." class="btn" name="deposit">Skrá greiðslu</button></p>
-</form>
+<div class="span5">
+    <h2>Innlegg</h2>
+    <form method="post" action="{{url_for('transaction_add')}}" class="well">
+        <dl>
+            {{ render_field(deposit_form.user) }}
+            {{ render_field(deposit_form.amount) }}
+            {{ render_field(deposit_form.comment) }}
+        </dl>
+        <p><button type="submit" data-loading-text="augnablik..." class="btn" name="deposit">Skrá greiðslu</button></p>
+    </form>
+</div>
 {% endif %}
 {% endblock %}

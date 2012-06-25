@@ -14,14 +14,10 @@
 
     <h1>Færslur</h1>
 
+    <h2>Færslur á mínum reikningi</h2>
     {% with %}
         {% set transactions = my_transactions %}
         {% include 'transactions_snippet.html' %}
-    {% endwith %}
-
-    {% with %}
-        {% set transactions = transactions_by_me %}
-        {% include 'transactions_by_me_snippet.html' %}
     {% endwith %}
 
 {% endblock %}

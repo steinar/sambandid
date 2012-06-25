@@ -10,7 +10,7 @@ from flask import send_from_directory
 
 from sambandid import app, facebook
 from sambandid.database import db
-from sambandid.forms import RegistrationForm, BeerForm, BeerTransactionForm, DepositTransactionForm
+from sambandid.forms import BeerForm, BeerTransactionForm, DepositTransactionForm
 from sambandid.models import Beer, User, Transaction
 
 # Helper functions
@@ -74,24 +74,15 @@ class LoginRequriedView(View):
 app.add_url_rule('/login-required', view_func=LoginRequriedView.as_view('login-required'))
 
 
-class RegisterView(View):
-    def dispatch_request(self):
-        form = RegistrationForm()
-        return render_template('register.html', form=form)
-
-app.add_url_rule('/register', view_func=RegisterView.as_view('register'))
-
-
 # Front page
 
 @app.route('/')
 def index():
-    form = RegistrationForm()
     token = get_facebook_oauth_token()
     user = get_user_object()
     if 'user' in session and not user:
         return redirect('logout')
-    return render_template('main.html', form=form, token=token, user=user and user.as_dict())
+    return render_template('main.html', token=token, user=user and user.as_dict())
 
 
 

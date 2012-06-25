@@ -25,4 +25,5 @@ facebook = oauth.remote_app('facebook',
 )
 
 # Application's views
-from views import *
+from sambandid.filters import *
+from sambandid.views import *

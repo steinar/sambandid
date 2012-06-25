@@ -1,32 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import TextField, PasswordField, validators, IntegerField
+from wtforms import TextField, validators, IntegerField
 from wtforms.ext.sqlalchemy.orm import Form
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from wtforms.ext.appengine.db import model_form
+from wtforms.fields import TextAreaField
 from sambandid.models import Beer, User
-
-class RegistrationForm(Form):
-    user = TextField('Username', [validators.Length(min=2, max=35)])
-    name = TextField('Name', [validators.Length(min=2, max=80)])
-    email = TextField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('New Password', [
-        validators.Required(),
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
-    confirm = PasswordField('Repeat Password')
 
 
 class BeerForm(Form):
-    name = TextField('Name', [validators.Length(min=2, max=80)])
-    price = TextField('Price')
+    name = TextField(u'Nafn', [validators.Length(min=2, max=80)])
+    price = TextField(u'Verð')
 
 
 class BeerTransactionForm(Form):
-    user = QuerySelectField(label='Member', query_factory=lambda: User.query.all())
-    beer = QuerySelectField(label='Beer', query_factory=lambda: Beer.query.all())
+    user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.query.all())
+    beer = QuerySelectField(u'Bjór', query_factory=lambda: Beer.query.all())
 
 
 class DepositTransactionForm(Form):
-    user = QuerySelectField(label='Member', query_factory=lambda: User.query.all())
-    amount = IntegerField('Amount')
+    user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.query.all())
+    amount = IntegerField(u'Upphæð')
+    comment = TextAreaField(u'Skýring')
