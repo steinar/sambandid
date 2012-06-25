@@ -21,10 +21,10 @@
 
                     {% if beer.image_url %}<a href="#beer-{{beer.id}}" data-toggle="modal"><img src="{{ beer.image_url }}" height="50"></a>{% endif %}
                 </td>
-                <td>{{ beer.name }}</td>
+                <td><a href="#beer-{{beer.id}}" data-toggle="modal">{{ beer.name }}</a></td>
                 <td>{{ beer.price }} ISK</td>
                 <td>
-                    <a href="{{url_for('beer_transaction', beer_id=beer.id)}}" class="btn btn-mini">Skrá þennan</a>
+                    <a href="{{url_for('beer_transaction', beer_id=beer.id)}}" class="btn btn-mini">Bókfæra</a>
                     
                 </td>
             </tr>
@@ -36,7 +36,7 @@
             <h3>{{beer.name}} - {{beer.price}} ISK</h3>
         </div>
         <div class="modal-body">
-            <p>{% if beer.image_url %}<img src="{{ beer.image_url }}">{% endif %}</p>
+            <p>{% if beer.image_url %}<img src="{{ beer.image_url }}">{% else %}Engin mynd =/{% endif %}</p>
         </div>
     </div>
     {% endfor %}

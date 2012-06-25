@@ -27,6 +27,9 @@ def require_login(func):
     def f(*args,**kwargs):
         if not 'user' in session:
             return redirect(url_for("login-required"))
+        user = get_user_object()
+        if 'user' in session and not user:
+            return redirect('logout')
         return func(*args,**kwargs)
     f.__name__ = func.__name__
     return f
@@ -110,7 +113,7 @@ class BeerAddView(MethodView):
         form = BeerForm(request.form)
         beer = Beer()
         print request.files
-        if 'image' in request.files:
+        if 'image' in request.files and request.files['image']:
             beer.image_path = photos.save(request.files['image'])
         form.populate_obj(beer)
         db.session.add(beer)
@@ -123,7 +126,7 @@ app.add_url_rule('/beer/add', view_func=BeerAddView.as_view('beer_add'))
 
 @app.route('/beers')
 def beers():
-    beers = Beer.query.all()
+    beers = Beer.all_active()
     return render_template('beers.html', beers=beers)
 
 # Transactions

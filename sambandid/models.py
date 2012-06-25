@@ -69,7 +69,7 @@ class Beer(SaveMixIn, db.Model):
     price = db.Column(db.Integer)
     image_path = db.Column(db.String(250))
     add_date = db.Column(db.DateTime)
-    active = db.Column(db.Boolean)
+    active = db.Column(db.Boolean, default=True)
 
     def __init__(self, name='', price=''):
         self.name = name
@@ -81,6 +81,10 @@ class Beer(SaveMixIn, db.Model):
         if not self.image_path:
             return None
         return photos.url(self.image_path)
+
+    @classmethod
+    def all_active(cls):
+        return Beer.query.filter_by(active=True)
 
     def __repr__(self):
         return '<Beer %r>' % self.name
