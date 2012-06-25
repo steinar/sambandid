@@ -71,6 +71,11 @@ class Beer(SaveMixIn, db.Model):
     add_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean, default=True)
 
+    volume = db.Column(db.Float, default=0)
+    alcohol = db.Column(db.Float, default=0)
+    calories = db.Column(db.Float, default=0)
+    joules = db.Column(db.Float, default=0)
+
     def __init__(self, name='', price=''):
         self.name = name
         self.price = price
