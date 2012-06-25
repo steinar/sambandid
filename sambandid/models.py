@@ -85,7 +85,6 @@ class Beer(SaveMixIn, db.Model):
         self.update_energy()
 
     def update_energy(self):
-        print self.joules, self.calories
         if self.joules > 0: self.calories = self.joules * 0.238845897
         if self.calories > 0: self.joules = self.calories * 4.1868
 
