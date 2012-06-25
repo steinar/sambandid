@@ -7,9 +7,8 @@ from flask.globals import request
 from flask.helpers import flash, url_for
 from flask.templating import render_template
 from flask.views import View, MethodView
-from flask.ext.admin import Admin
-from flask.ext.admin.contrib.sqlamodel.view import ModelView
-from sambandid import app, facebook, photos, admin
+#from flask.ext.admin.contrib.sqlamodel.view import ModelView
+from sambandid import app, facebook, photos#, admin
 from sambandid.database import db
 from sambandid.forms import BeerForm, BeerTransactionForm, DepositTransactionForm
 from sambandid.models import Beer, User, Transaction
@@ -196,5 +195,5 @@ app.add_url_rule('/transactions/add', view_func=TransactionRegistrationView.as_v
 def authenticated_admin_view(cls,name=None):
     return type(name or cls.__name__, (cls,), {'is_accessible': lambda self: get_user_object() and get_user_object().is_admin})
 
-admin.add_view(authenticated_admin_view(ModelView)(User, db.session))
-admin.add_view(authenticated_admin_view(ModelView)(Transaction, db.session))
+#admin.add_view(authenticated_admin_view(ModelView)(User, db.session))
+#admin.add_view(authenticated_admin_view(ModelView)(Transaction, db.session))

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flaskext.uploads import configure_uploads, IMAGES, UploadSet
-from flask.ext.admin import Admin
+#from flask.ext.admin import Admin
 
 from kit.helpers import AppFactory
 from settings import DevelopmentConfig, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
@@ -32,7 +32,7 @@ app.config['UPLOADS_DEFAULT_URL'] = settings.UPLOADS_DEFAULT_URL
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, (photos,))
 
-admin = Admin(app)
+#admin = Admin(app)
 
 # Application's views
 from sambandid.filters import *
