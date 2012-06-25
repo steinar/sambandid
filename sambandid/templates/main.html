@@ -7,12 +7,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Le styles -->
-
     <link href="{{ url_for('static', filename="bootstrap/css/bootstrap.css") }}" rel="stylesheet">
     <style>
         body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            padding-top: 60px;
         }
     </style>
 
@@ -28,11 +26,6 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
             <a class="brand" href="/">Sambandið</a>
             <div class="btn-group pull-right">
                 {% if session.user %}
@@ -41,9 +34,9 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{url_for('transactions')}}">Profile</a></li>
+                    <li><a href="{{url_for('transactions')}}">Minn reikningur</a></li>
                     <li class="divider"></li>
-                    <li><a href="{{url_for('logout')}}">Logout</a></li>
+                    <li><a href="{{url_for('logout')}}">Útskrá</a></li>
                 </ul>
                 {% else %}
                 <a class="btn btn-primary" href="{{url_for('login')}}" data-toggle="dropdown" href="#">
@@ -53,23 +46,19 @@
             </div>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li><a href="/">Home</a></li>
                     <li><a href="{{url_for('beers')}}">Bjór!</a></li>
                     <li><a href="{{url_for('transaction_add')}}">Bókfæra</a></li>
                     <li><a href="{{url_for('transactions')}}">Minn reikningur</a></li>
                     <li class="dropdown">
-                        <a href="#"
-                           class="dropdown-toggle"
-                           data-toggle="dropdown">
-                            Umsýslan
-                            <b class="caret"></b>
-                        </a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Umsýslan</a>
                         <ul class="dropdown-menu">
                             <li><a class="" href="{{url_for('beer_add')}}">Skrá bjór</a></li>
+                            <li><a class="" href="{{url_for('transactionview.index_view')}}"><span class="icon-wrench"></span> Bókhaldið</a></li>
+                            <li><a class="" href="{{url_for('userview.index_view')}}"><span class="icon-wrench"></span> Notendur</a></li>
                         </ul>
                     </li>
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </div>
 </div>
@@ -91,7 +80,6 @@
         <h1>Velkominn á vef Sambandsins</h1>
         <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
 
-
         {% if user %}
             {% include 'user_workspace.html' %}
         {% endif %}
@@ -103,24 +91,20 @@
         <img src="{{ url_for('static', filename="img/sambandid.png") }}" width="200"/>
     </div>
     {% endblock %}
-</div> <!-- /container -->
+</div>
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="{{ url_for('static', filename="bootstrap/js/jquery.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-transition.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-alert.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-modal.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-dropdown.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-scrollspy.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-tab.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-tooltip.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-popover.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-button.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-collapse.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-carousel.js") }}"></script>
-<script src="{{ url_for('static', filename="bootstrap/js/bootstrap-typeahead.js") }}"></script>
-
+<script src="{{ url_for('static', filename='bootstrap/js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-transition.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-alert.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-modal.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-dropdown.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-scrollspy.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-tab.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-tooltip.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-popover.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-button.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-collapse.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap-typeahead.js') }}"></script>
 </body>
 </html>

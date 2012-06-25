@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-import math
-import os
+from flaskext.uploads import configure_uploads, IMAGES, UploadSet
 from sqlalchemy.exc import OperationalError
 from sambandid import photos
-
 from sambandid.database import db
 from datetime import datetime
-# Put your main models here
-from settings import DB_PATH
 
 class SaveMixIn(object):
     def save(self):
@@ -31,7 +27,7 @@ class User(SaveMixIn, db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
 
-    def __init__(self, name, username, email):
+    def __init__(self, name, username, email, is_admin=False):
         self.name = name
         self.username = username
         self.email = email
@@ -49,7 +45,8 @@ class User(SaveMixIn, db.Model):
     def from_facebook(cls, me):
         user = User.query.filter_by(username=me.data['username']).first()
         if not user:
-            user = User(me.data['name'], me.data['username'], me.data['email'])
+            is_admin = User.query.all().count() == 0 # First user becomes admin
+            user = User(me.data['name'], me.data['username'], me.data['email'], is_admin)
             db.session.add(user)
             db.session.commit()
         return user
@@ -100,7 +97,7 @@ class Beer(SaveMixIn, db.Model):
 
     @classmethod
     def all_active(cls):
-        return Beer.query.filter_by(active=True)
+        return Beer.query.filter_by(active=True).order_by('name')
 
     def __repr__(self):
         return '<Beer %r>' % self.name

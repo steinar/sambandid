@@ -1,38 +1,52 @@
 # -*- coding: utf-8 -*-
-from flaskext.uploads import IMAGES, UploadSet
 import os
+from flask.ext.admin import Admin
+from flask.ext.admin.contrib.sqlamodel.view import ModelView
 from flask import session
 from flask.globals import request
 from flask.helpers import flash, url_for
 from flask.templating import render_template
 from flask.views import View, MethodView
-from werkzeug.utils import redirect, secure_filename
+from werkzeug.utils import redirect
 from flask import send_from_directory
 
-from sambandid import app, facebook, photos
+from sambandid import app, facebook, photos, admin
 from sambandid.database import db
 from sambandid.forms import BeerForm, BeerTransactionForm, DepositTransactionForm
 from sambandid.models import Beer, User, Transaction
+
 
 # Helper functions
 
 def get_user_object(username=None):
     username = username or 'user' in session and session['user']['username']
     if username:
-        return User.query.filter_by(username=username).first()
+        return User.query.filter_by(username=username, active=True).first()
     return None
 
 
-def require_login(func):
+def inject_user(func):
     def f(*args,**kwargs):
         if not 'user' in session:
             return redirect(url_for("login-required"))
         user = get_user_object()
         if 'user' in session and not user:
-            return redirect('logout')
-        return func(*args,**kwargs)
+            return redirect(url_for('logout'))
+        return func(*args, user=user,**kwargs)
     f.__name__ = func.__name__
     return f
+
+
+def only_admin(func):
+    def f(*args,**kwargs):
+        user = 'user' in kwargs and kwargs['user'] or get_user_object()
+        if not user.is_admin:
+            return redirect(url_for('index'))
+        return func(*args, **kwargs)
+    f.__name__ = func.__name__
+    return f
+
+
 
 
 # Authentication
@@ -81,9 +95,9 @@ app.add_url_rule('/login-required', view_func=LoginRequriedView.as_view('login-r
 # Front page
 
 @app.route('/')
-def index():
+@inject_user
+def index(user=None):
     token = get_facebook_oauth_token()
-    user = get_user_object()
     if 'user' in session and not user:
         return redirect('logout')
     return render_template('main.html', token=token, user=user and user.as_dict())
@@ -102,8 +116,9 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 class BeerAddView(MethodView):
-    @require_login
-    def get(self, beer_id=None):
+    @inject_user
+    @only_admin
+    def get(self, beer_id=None, user=None):
         if beer_id:
             beer = Beer.query.filter_by(id=beer_id).first()
         else:
@@ -112,8 +127,9 @@ class BeerAddView(MethodView):
         return render_template('beer_form.html', form=form)
 
 
-    @require_login
-    def post(self, beer_id=None):
+    @inject_user
+    @only_admin
+    def post(self, beer_id=None, user=None):
         form = BeerForm(request.form)
         if beer_id:
             beer = Beer.query.filter_by(id=beer_id).first()
@@ -133,54 +149,60 @@ app.add_url_rule('/beer/edit/<int:beer_id>/', view_func=BeerAddView.as_view('bee
 
 
 @app.route('/beers')
-@require_login
-def beers():
+@inject_user
+def beers(user=None):
     beers = Beer.all_active()
     return render_template('beers.html', beers=beers)
 
 # Transactions
 
 @app.route('/transactions')
-@require_login
-def transactions():
-    user = get_user_object()
-    transactions_by_me = Transaction.query.filter_by(registered_by=user)
-    my_transactions = Transaction.query.filter_by(user=user)
+@inject_user
+def transactions(user=None):
+#    transactions_by_me = Transaction.query.filter_by(registered_by=user)
+    my_transactions = Transaction.query.filter_by(user=user).order_by(Transaction.transaction_date.desc())
     account_status = user.account_status
-    return render_template('transactions.html', transactions_by_me=transactions_by_me, \
-        my_transactions=my_transactions, account_status=account_status)
+    return render_template('transactions.html', my_transactions=my_transactions, account_status=account_status)
 
 
 @app.route('/transaction/<int:beer_id>')
-@require_login
-def beer_transaction(beer_id):
+@inject_user
+def beer_transaction(beer_id, user=None):
     beer = Beer.query.filter_by(id=beer_id).first()
-    initial = Transaction(user=get_user_object(), beer=beer)
+    initial = Transaction(user=user, beer=beer)
     beer_form = BeerTransactionForm(obj=initial)
     return render_template('transaction_form.html', beer_form=beer_form, deposit_form=None)
 
 
 class TransactionRegistrationView(MethodView):
-    @require_login
-    def get(self):
-        initial = Transaction(user=get_user_object(), amount=None)
+    @inject_user
+    def get(self, user=None):
+        initial = Transaction(user=user, amount=None)
         beer_form = BeerTransactionForm(obj=initial)
         deposit_form = DepositTransactionForm(obj=initial)
         return render_template('transaction_form.html', beer_form=beer_form, deposit_form=deposit_form)
 
-    @require_login
-    def post(self):
+    @inject_user
+    def post(self, user=None):
         if not request.form or (not 'beer' in request.form and not 'deposit' in request.form):
             return redirect(url_for("transaction-add"))
 
         form_cls = BeerTransactionForm if 'beer' in request.form else DepositTransactionForm
         form = form_cls(request.form)
         transaction = Transaction(**form.data)
-        transaction.registered_by = get_user_object()
+        transaction.registered_by = user
         transaction.save()
-        user = get_user_object()
         user.update_account_status()
         flash(unicode('Færslan hefur verið bókfærð. Þakka þér, meistari.', 'utf-8'))
         return redirect(url_for("transactions"))
 
 app.add_url_rule('/transactions/add', view_func=TransactionRegistrationView.as_view('transaction_add'))
+
+
+# Admin
+
+def authenticated_admin_view(cls,name=None):
+    return type(name or cls.__name__, (cls,), {'is_accessible': lambda self: get_user_object() and get_user_object().is_admin})
+
+admin.add_view(authenticated_admin_view(ModelView)(User, db.session))
+admin.add_view(authenticated_admin_view(ModelView)(Transaction, db.session))

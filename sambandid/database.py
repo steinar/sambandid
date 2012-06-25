@@ -14,7 +14,6 @@
 # define `db` object like this and use it wherever you need
 
 from flask.ext.sqlalchemy import SQLAlchemy
-import os
 from sambandid import app
 from settings import DB_PATH
 
