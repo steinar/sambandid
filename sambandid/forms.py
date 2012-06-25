@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import TextField, validators, IntegerField
+from wtforms import TextField, validators, IntegerField, FloatField
 from wtforms.ext.sqlalchemy.orm import Form
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.fields import TextAreaField, FileField
@@ -10,6 +10,10 @@ from sambandid.models import Beer, User
 class BeerForm(Form):
     name = TextField(u'Nafn', [validators.Length(min=2, max=80)])
     price = TextField(u'Verð')
+    volume = FloatField(u'Magn')
+    alcohol = FloatField(u'Vínhlutfall')
+    calories = FloatField(u'Kaloríur')
+    joules = FloatField(u'Orka')
     image = FileField(u'Mynd')
 
 

@@ -76,10 +76,21 @@ class Beer(SaveMixIn, db.Model):
     calories = db.Column(db.Float, default=0)
     joules = db.Column(db.Float, default=0)
 
-    def __init__(self, name='', price=''):
+    def __init__(self, name='', price='', volume=0, alcohol=0, calories=0, joules=0):
         self.name = name
         self.price = price
         self.add_date = datetime.utcnow()
+        self.volume = volume
+        self.alcohol = alcohol
+        self.calories = calories
+        self.joules = joules
+        self.update_energy()
+
+    def update_energy(self):
+        print self.joules, self.calories
+        if self.joules > 0: self.calories = self.joules * 0.238845897
+        if self.calories > 0: self.joules = self.calories * 4.1868
+
 
     @property
     def image_url(self):

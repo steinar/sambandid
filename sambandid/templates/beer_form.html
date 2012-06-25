@@ -4,12 +4,18 @@
 <h1>Bjór bjór bjór</h1>
 
 {% from "_forms.html" import render_field %}
-<form method="post" action="" enctype="multipart/form-data">
-    <dl>
-        {{ render_field(form.name) }}
-        {{ render_field(form.price) }}
+<form method="post" action="" enctype="multipart/form-data" class="">
+    <fieldset>
+        {{ render_field(form.name,None,None,'Tegund gerð, td. Carlsberg gler, Tuborg dós.') }}
+        {{ render_field(form.price, 'ISK') }}
+        {{ render_field(form.volume, 'ml') }}
+        {{ render_field(form.alcohol, '%') }}
+        {{ render_field(form.calories, 'kcal', None, 'Nóg að fylla út annað hvort kcal eða kJ.') }}
+        {{ render_field(form.joules, 'kJ') }}
         {{ render_field(form.image) }}
-    </dl>
-    <button class="btn">Skrá þennan á lagerinn</button>
+    </fieldset>
+    <div class="form-actions well">
+        <button class="btn btn-primary"><span class="icon-ok"></span> Skrá þennan á lagerinn</button>
+    </div>
 </form>
 {% endblock %}

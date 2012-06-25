@@ -103,27 +103,37 @@ def allowed_file(filename):
 
 class BeerAddView(MethodView):
     @require_login
-    def get(self):
-        form = BeerForm()
+    def get(self, beer_id=None):
+        if beer_id:
+            beer = Beer.query.filter_by(id=beer_id).first()
+        else:
+            beer = Beer()
+        form = BeerForm(obj=beer)
         return render_template('beer_form.html', form=form)
 
 
     @require_login
-    def post(self):
+    def post(self, beer_id=None):
         form = BeerForm(request.form)
-        beer = Beer()
+        if beer_id:
+            beer = Beer.query.filter_by(id=beer_id).first()
+        else:
+            beer = Beer()
         if 'image' in request.files and request.files['image']:
             beer.image_path = photos.save(request.files['image'])
         form.populate_obj(beer)
+        beer.update_energy()
         db.session.add(beer)
         db.session.commit()
         flash('Saved')
         return redirect(url_for("beers"))
 
 app.add_url_rule('/beer/add', view_func=BeerAddView.as_view('beer_add'))
+app.add_url_rule('/beer/edit/<int:beer_id>/', view_func=BeerAddView.as_view('beer_edit'))
 
 
 @app.route('/beers')
+@require_login
 def beers():
     beers = Beer.all_active()
     return render_template('beers.html', beers=beers)
