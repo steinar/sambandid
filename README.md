@@ -6,10 +6,13 @@
 
 Megintilgangur kerfisins er til að halda utan um eignir og skuldir Sambandsins.
 
-## Hvernig setur þú upp kerfið?
+## Hvernig setur þú kerfið upp?
 
-Vertu róleg(ur), fyrst þarftu að forrita það!
+```git clone https://github.com/steinar/sambandid.git
+cd sambandid
+pip install -r requirements.pip
+python manage.py runserver```
 
 ## Hvað á eftir að gera?
 
-Spurðu ekki kerfið hvað vantar, spurðu sjálfa(n) þig hvernig þú getur bætt við kerfið!
+Spurðu ekki kerfið hvað vantar, spurðu sjálfa(n) þig hvernig þú getur bætt kerfið!

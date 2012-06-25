@@ -1,3 +1,4 @@
+-e ./
 Flask==0.8
 Flask-Admin==1.0.1
 Flask-Gravatar==0.2.3
