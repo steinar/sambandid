@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
-from flask.ext.admin import Admin
-from flask.ext.admin.contrib.sqlamodel.view import ModelView
+from werkzeug.utils import redirect
+from flask import send_from_directory
 from flask import session
 from flask.globals import request
 from flask.helpers import flash, url_for
 from flask.templating import render_template
 from flask.views import View, MethodView
-from werkzeug.utils import redirect
-from flask import send_from_directory
-
+from flask.ext.admin import Admin
+from flask.ext.admin.contrib.sqlamodel.view import ModelView
 from sambandid import app, facebook, photos, admin
 from sambandid.database import db
 from sambandid.forms import BeerForm, BeerTransactionForm, DepositTransactionForm
@@ -45,8 +44,6 @@ def only_admin(func):
         return func(*args, **kwargs)
     f.__name__ = func.__name__
     return f
-
-
 
 
 # Authentication
@@ -103,17 +100,12 @@ def index(user=None):
     return render_template('main.html', token=token, user=user and user.as_dict())
 
 
-
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static/img'),
         'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 # Beer!
-
-def allowed_file(filename):
-    return '.' in filename and\
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 class BeerAddView(MethodView):
     @inject_user
@@ -125,7 +117,6 @@ class BeerAddView(MethodView):
             beer = Beer()
         form = BeerForm(obj=beer)
         return render_template('beer_form.html', form=form)
-
 
     @inject_user
     @only_admin
@@ -153,6 +144,7 @@ app.add_url_rule('/beer/edit/<int:beer_id>/', view_func=BeerAddView.as_view('bee
 def beers(user=None):
     beers = Beer.all_active()
     return render_template('beers.html', beers=beers)
+
 
 # Transactions
 

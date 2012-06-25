@@ -60,6 +60,7 @@ class User(SaveMixIn, db.Model):
         return {'id': self.id, 'name': self.name, 'username': self.username, 'email': self.email, \
                 'account_status': self.account_status }
 
+
 class Beer(SaveMixIn, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
@@ -88,7 +89,6 @@ class Beer(SaveMixIn, db.Model):
         if self.joules > 0: self.calories = self.joules * 0.238845897
         if self.calories > 0: self.joules = self.calories * 4.1868
 
-
     @property
     def image_url(self):
         if not self.image_path:
@@ -104,7 +104,6 @@ class Beer(SaveMixIn, db.Model):
 
     def __unicode__(self):
         return unicode("%s (%s)" % (self.name,self.price))
-
 
 
 class Transaction(SaveMixIn, db.Model):
@@ -133,15 +132,8 @@ class Transaction(SaveMixIn, db.Model):
         self.transaction_date = datetime.utcnow()
         self.comment = comment
 
-
     def __repr__(self):
         return '<Transaction %s, %s, %s, %s>' % (self.user, self.registered_by, self.beer, self.amount)
 
     def __unicode__(self):
         return unicode(self.transaction_date)
-
-
-#if not os.path.exists(DB_PATH):
-db.create_all()
-
-
