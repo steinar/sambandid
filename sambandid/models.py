@@ -3,7 +3,7 @@ import math
 import os
 from sqlalchemy.exc import OperationalError
 
-from application.database import db
+from sambandid.database import db
 from datetime import datetime
 # Put your main models here
 from settings import DB_PATH

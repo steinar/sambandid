@@ -15,7 +15,7 @@
 
 from flask.ext.sqlalchemy import SQLAlchemy
 import os
-from application import app
+from sambandid import app
 from settings import DB_PATH
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DB_PATH

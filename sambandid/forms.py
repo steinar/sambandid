@@ -4,7 +4,7 @@ from wtforms import TextField, PasswordField, validators, IntegerField
 from wtforms.ext.sqlalchemy.orm import Form
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.ext.appengine.db import model_form
-from application.models import Beer, User
+from sambandid.models import Beer, User
 
 class RegistrationForm(Form):
     user = TextField('Username', [validators.Length(min=2, max=35)])

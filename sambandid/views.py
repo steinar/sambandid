@@ -6,12 +6,12 @@ from flask.helpers import flash, url_for
 from flask.templating import render_template
 from flask.views import View, MethodView
 from werkzeug.utils import redirect
-from application import app, facebook
 from flask import send_from_directory
 
-from application.database import db
-from application.forms import RegistrationForm, BeerForm, BeerTransactionForm, DepositTransactionForm
-from application.models import Beer, User, Transaction
+from sambandid import app, facebook
+from sambandid.database import db
+from sambandid.forms import RegistrationForm, BeerForm, BeerTransactionForm, DepositTransactionForm
+from sambandid.models import Beer, User, Transaction
 
 # Helper functions
 
