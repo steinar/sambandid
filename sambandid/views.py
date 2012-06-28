@@ -142,7 +142,8 @@ app.add_url_rule('/beer/edit/<int:beer_id>/', view_func=BeerAddView.as_view('bee
 @inject_user
 def beers(user=None):
     beers = Beer.all_active()
-    return render_template('beers.html', beers=beers)
+    beers_inactive = Beer.all_inactive()
+    return render_template('beers.html', beers=beers, beers_inactive=beers_inactive)
 
 
 # Transactions

@@ -4,6 +4,7 @@ from wtforms import TextField, validators, IntegerField, FloatField
 from wtforms.ext.sqlalchemy.orm import Form
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.fields import TextAreaField, FileField
+from wtforms.fields.core import BooleanField
 from sambandid.models import Beer, User
 
 
@@ -15,6 +16,7 @@ class BeerForm(Form):
     calories = FloatField(u'Kaloríur')
     joules = FloatField(u'Orka')
     image = FileField(u'Mynd')
+    active = BooleanField(u'Virkur', default=True)
 
 
 class BeerTransactionForm(Form):

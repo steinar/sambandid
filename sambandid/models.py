@@ -98,6 +98,10 @@ class Beer(SaveMixIn, db.Model):
     def all_active(cls):
         return Beer.query.filter_by(active=True).order_by('name')
 
+    @classmethod
+    def all_inactive(cls):
+        return Beer.query.filter_by(active=False).order_by('name')
+
     def __repr__(self):
         return '<Beer %r>' % self.name
 

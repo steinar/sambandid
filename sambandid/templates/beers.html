@@ -3,50 +3,26 @@
 {% block content %}
 <h1>Lagerinn</h1>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Nafn</th>
-            <th>Verð</th>
-            <th>Magn</th>
-            <th>Orka</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for beer in beers %}
-            <tr>
-                <td>
-
-                    {% if beer.image_url %}<a href="#beer-{{beer.id}}" data-toggle="modal"><img src="{{ beer.image_url }}" height="20"></a>{% endif %}
-                </td>
-                <td><a href="#beer-{{beer.id}}" data-toggle="modal">{{ beer.name }}</a></td>
-                <td>{{ beer.price }} ISK</td>
-                <td>{{ beer.volume or '-' }} ml</td>
-                <td>{{ beer.joules or '-' }} kJ</td>
-                <td>
-                    <a href="{{url_for('beer_transaction', beer_id=beer.id)}}" class="btn btn-mini btn-primary"><span class="icon-arrow-right"></span> Bókfæra</a>
-
-                </td>
-            </tr>
-    {% endfor %}
-    {% for beer in beers %}
-    <div class="modal hide" id="beer-{{beer.id}}">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3>{{beer.name}} - {{beer.price}} ISK</h3>
+    {% with %}
+        {% set beers = beers %}
+        {% include 'beer_table_snippet.html' %}
+    {% endwith %}
+<div class="accordion" id="accordion2">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                Meira
+            </a>
         </div>
-        <div class="modal-body">
-            <p align="center">{% if beer.image_url %}<img src="{{ beer.image_url }}">{% else %}Engin mynd =/{% endif %}</p>
+        <div id="collapseOne" class="accordion-body collapse" style="height: 0px; ">
+            <div class="accordion-inner">
+                <h2>Úrelt og snargalið</h2>
+                {% with %}
+                {% set beers = beers_inactive %}
+                {% include 'beer_table_snippet.html' %}
+                {% endwith %}
+            </div>
         </div>
-        <div class="modal-footer">
-            <a href="#" class="btn" data-dismiss="modal">Loka</a>
-            <a href="{{url_for('beer_edit', beer_id=beer.id)}}" class="btn"><span class="icon-cog"></span> Breyta</a>
-            <a href="{{url_for('beer_transaction', beer_id=beer.id)}}" class="btn btn-primary"><span class="icon-arrow-right"></span> Bókfæra</a>
-        </div>
-
     </div>
-    {% endfor %}
-    </tbody>
-</table>
+</div>
 {% endblock %}
