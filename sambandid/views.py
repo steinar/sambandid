@@ -73,7 +73,7 @@ def logout():
     session.pop('user', None)
     session.pop('oauth_token', None)
     session.pop('_flashes', None)
-    flash('You were signed out')
+    flash(u'Þú hefur aftengst.')
     return redirect(request.referrer or url_for('index'))
 
 
