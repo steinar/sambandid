@@ -1,0 +1,18 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Dagsetning</th>
+        <th>Meðlimur</th>
+        <th>Upphæð</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.transaction_date|datetimeformat }}</td>
+        <td>{{ transaction.user }}</td>
+        <td>{{ transaction.amount }} ISK</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

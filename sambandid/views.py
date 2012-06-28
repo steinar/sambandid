@@ -96,7 +96,11 @@ def index(user=None):
     token = get_facebook_oauth_token()
     if 'user' in session and not user:
         return redirect('logout')
-    return render_template('main.html', token=token, user=user and user.as_dict())
+    recent_plus = Transaction.query.filter(Transaction.amount>0).order_by(Transaction.transaction_date.desc()).limit(10)
+    recent_minus = Transaction.query.filter(Transaction.amount<0).order_by(Transaction.transaction_date.desc()).limit(10)
+
+    return render_template('main.html', token=token, user=user and user.as_dict(), recent_minus=recent_minus,
+        recent_plus=recent_plus)
 
 
 def favicon():

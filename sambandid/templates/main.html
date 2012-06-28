@@ -76,20 +76,43 @@
     {% endwith %}
 
     {% block content %}
-    <div class="span8">
-        <h1>Velkominn á vef Sambandsins</h1>
-        <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
+    <div class="row">
+        <div class="span12">
+            <h1>Velkominn á vef Sambandsins</h1>
+            <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
 
-        {% if user %}
-            {% include 'user_workspace.html' %}
-        {% endif %}
+            {% if user %}
+                {% include 'user_workspace.html' %}
+            {% endif %}
 
-        <h2>Stjörnusambandsstöð</h2>
-        <object width="460" height="100"><param name="movie" value="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" /><param name="allowscriptaccess" value="always" /><embed src="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" type="application/x-shockwave-flash" allowscriptaccess="always" width="460" height="100" /></object>
+
+        </div>
     </div>
-    <div class="span2">
-        <img src="{{ url_for('static', filename='img/sambandid.png') }}" width="300"/>
+    <!--<div class="span2">-->
+        <!--<img src="{{ url_for('static', filename='img/sambandid.png') }}" width="150"/>-->
+        <!--<object width="150" height="100">-->
+            <!--<param name="movie" value="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" /><param name="allowscriptaccess" value="always" />-->
+            <!--<embed src="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" type="application/x-shockwave-flash" allowscriptaccess="always" width="150" height="100" />-->
+        <!--</object>-->
+    <!--</div>-->
+    <h2>Nýlegar færslur</h2>
+    <div class="row">
+        <div class="span6">
+            <h2>Debet</h2>
+            {% with %}
+            {% set transactions = recent_plus %}
+            {% include 'transactions_small_snippet.html'%}
+            {% endwith %}
+        </div>
+        <div class="span6">
+            <h2>Kredit</h2>
+            {% with %}
+            {% set transactions = recent_minus %}
+            {% include 'transactions_small_snippet.html'%}
+            {% endwith %}
+        </div>
     </div>
+
     {% endblock %}
 </div>
 
