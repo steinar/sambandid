@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
+
+import settings
+import os
 from flaskext.uploads import configure_uploads, IMAGES, UploadSet
 #from flask.ext.admin import Admin
 
 from kit.helpers import AppFactory
 from settings import DevelopmentConfig, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 from flaskext.oauth import OAuth
-import settings
 
-app = AppFactory(DevelopmentConfig).get_app()
+if os.environ.get('mode', 'dev') == 'production':
+    config = settings.BaseConfig
+else:
+    config = DevelopmentConfig
+
+app = AppFactory(config).get_app()
 app.secret_key = settings.SECRET_KEY
 
 from database import *
