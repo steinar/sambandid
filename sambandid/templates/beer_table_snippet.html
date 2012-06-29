@@ -20,7 +20,7 @@
         <td>{{ beer.price }} ISK</td>
         <td>{{ beer.alcohol or '0' }}%</td>
         <td>{{ beer.volume or '-' }} ml</td>
-        <td>{{ beer.joules or '-' }} kJ</td>
+        <td>{{ beer.joules|round|int or '-' }} kJ</td>
         <td>
             <a href="{{url_for('beer_transaction', beer_id=beer.id)}}" class="btn btn-mini btn-primary"><span class="icon-arrow-right"></span> Bókfæra</a>
 
