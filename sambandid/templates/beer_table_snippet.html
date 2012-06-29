@@ -18,7 +18,7 @@
         </td>
         <td><a href="#beer-{{beer.id}}" data-toggle="modal">{{ beer.name }}</a></td>
         <td>{% if beer.price %}{{ beer.price }} ISK{% endif %}</td>
-        <td>{% if beer.alcohol %}{{ beer.alcohol or '0' }}%{% endif %}</td>
+        <td>{{ beer.alcohol or '0' }}%</td>
         <td>{% if beer.volume %}{{ beer.volume or '-' }} ml{% endif %}</td>
         <td>{% if beer.joules %}{{ beer.joules|round|int }} kJ{% endif %}</td>
         <td>
