@@ -7,7 +7,9 @@
 <form method="post" action="" enctype="multipart/form-data" class="">
     <fieldset>
         {{ render_field(form.name,None,None,'Tegund gerð, td. Carlsberg gler, Tuborg dós.') }}
-        {{ render_field(form.price, 'ISK') }}
+        {{ render_field(form.name_accusative,None,None,'Nafn í þolfalli, td. (um) Carlsberg í gleri.') }}
+        {{ render_field(form.price, 'ISK', None, 'Sambandsverð.') }}
+        {{ render_field(form.purchase_price, 'ISK', None, 'ÁTVR verð.') }}
         {{ render_field(form.volume, 'ml') }}
         {{ render_field(form.alcohol, '%') }}
         {{ render_field(form.calories, 'kcal', None, 'Nóg að fylla út annað hvort kcal eða kJ.') }}

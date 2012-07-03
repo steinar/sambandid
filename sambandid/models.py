@@ -68,7 +68,9 @@ class User(SaveMixIn, db.Model):
 class Beer(SaveMixIn, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
+    name_accusative = db.Column(db.String(120))
     price = db.Column(db.Integer)
+    purchase_price = db.Column(db.Integer)
     image_path = db.Column(db.String(250))
     add_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean, default=True)

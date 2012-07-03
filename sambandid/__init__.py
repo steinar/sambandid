@@ -8,7 +8,6 @@ from flaskext.uploads import configure_uploads, IMAGES, UploadSet
 from kit.helpers import AppFactory
 from settings import DevelopmentConfig, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 from flaskext.oauth import OAuth
-from flaskext.evolution import Evolution
 from flaskext.script import Manager
 
 

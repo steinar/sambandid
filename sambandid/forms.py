@@ -10,7 +10,9 @@ from sambandid.models import Beer, User
 
 class BeerForm(Form):
     name = TextField(u'Nafn', [validators.Length(min=2, max=80)])
+    name_accusative = TextField(u'Nafn þf.', [validators.Length(min=2, max=80)])
     price = TextField(u'Verð')
+    purchase_price = TextField(u'Innkaupsverð')
     volume = FloatField(u'Magn')
     alcohol = FloatField(u'Vínhlutfall')
     calories = FloatField(u'Kaloríur')
