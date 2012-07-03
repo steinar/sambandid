@@ -11,7 +11,6 @@
 """
 
 import code
-from flaskext.evolution import Evolution
 from flaskext.script import Manager, Shell, Command, Option
 from kit.helpers import MainAppHelper, BlueprintPackageFactory
 
@@ -48,12 +47,6 @@ class Blueprint(Command):
 
 manager.add_command("shell", iShell())
 manager.add_command("createblueprint", Blueprint())
-
-evolution = Evolution(app)
-
-@manager.command
-def migrate(action):
-    evolution.manager(action)
 
 if __name__ == "__main__":
     manager.run()
