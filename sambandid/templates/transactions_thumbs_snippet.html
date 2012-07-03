@@ -44,7 +44,7 @@
                     'sótti sér',
                     'þambaði á mettíma',
                     'laumaðist og náði einum',
-                    'skellti sér á',
+                    'skellti sér á eitt stk',
                     'sturtaði í sig ísköldum',
                     'er að sötra',
                     'splæsti á sig einum',
@@ -53,8 +53,7 @@
                     {{ rand }}
                     <a rel="popover" data-content="Ekki nema {{ transaction.beer.price}} ISK"
                        data-original-title="Verð á {{transaction.beer.name}}">
-                        <strong>{{ transaction.beer.name }}</strong>
-                    </a>.
+                        <strong>{{ transaction.beer.name }}</strong></a>.
                 {% endwith %}
                 <br/>
             {% endif %}
