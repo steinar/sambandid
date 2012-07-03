@@ -19,5 +19,6 @@ distribute==0.6.24
 httplib2==0.7.4
 ipython==0.12
 oauth2==1.5.211
+-e git+https://github.com/steinar/sambandid.git@8e3a94d2c70dd618cf6c05ba6297812b4d66e4a4#egg=sambandid-dev
 sqlalchemy-migrate==0.7.2
 wsgiref==0.1.2

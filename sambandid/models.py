@@ -41,6 +41,10 @@ class User(SaveMixIn, db.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def first_name(self):
+        return self.name and self.name.split(" ")[0] or ""
+
     @classmethod
     def from_facebook(cls, me):
         user = User.query.filter_by(username=me.data['username']).first()

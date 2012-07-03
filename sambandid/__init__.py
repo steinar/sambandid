@@ -8,6 +8,10 @@ from flaskext.uploads import configure_uploads, IMAGES, UploadSet
 from kit.helpers import AppFactory
 from settings import DevelopmentConfig, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 from flaskext.oauth import OAuth
+from flaskext.evolution import Evolution
+from flaskext.script import Manager
+
+
 
 if os.environ.get('mode', 'dev') == 'production':
     config = settings.BaseConfig
@@ -19,8 +23,11 @@ app.secret_key = settings.SECRET_KEY
 
 from database import *
 
+
+
 app.register_all_blueprints()
 app.register_all_context_processors()
+
 
 oauth = OAuth()
 facebook = oauth.remote_app('facebook',

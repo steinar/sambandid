@@ -96,11 +96,9 @@ def index(user=None):
     token = get_facebook_oauth_token()
     if 'user' in session and not user:
         return redirect('logout')
-    recent_plus = Transaction.query.filter(Transaction.amount>0).order_by(Transaction.transaction_date.desc()).limit(10)
-    recent_minus = Transaction.query.filter(Transaction.amount<0).order_by(Transaction.transaction_date.desc()).limit(10)
+    recent_transactions = Transaction.query.order_by(Transaction.transaction_date.desc()).limit(10)
 
-    return render_template('main.html', token=token, user=user and user.as_dict(), recent_minus=recent_minus,
-        recent_plus=recent_plus)
+    return render_template('main.html', token=token, user=user and user.as_dict(), recent_transactions=recent_transactions)
 
 
 def favicon():
@@ -159,6 +157,14 @@ def transactions(user=None):
     my_transactions = Transaction.query.filter_by(user=user).order_by(Transaction.transaction_date.desc())
     account_status = user.account_status
     return render_template('transactions.html', my_transactions=my_transactions, account_status=account_status)
+
+
+@app.route('/transactions/recent')
+@inject_user
+def recent_transactions(user=None):
+    recent_plus = Transaction.query.filter(Transaction.amount>0).order_by(Transaction.transaction_date.desc()).limit(10)
+    recent_minus = Transaction.query.filter(Transaction.amount<0).order_by(Transaction.transaction_date.desc()).limit(10)
+    return render_template('recent_transactions.html', user=user, recent_minus=recent_minus, recent_plus=recent_plus)
 
 
 @app.route('/transaction/<int:beer_id>')

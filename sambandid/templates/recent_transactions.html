@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>Bókhaldið</h1>
+    <p>Jæja {{ user.first_name }}, er alltaf verið að hnýsast?</p>
+    <div class="row">
+        <div class="span6">
+            <h2>Debet</h2>
+            {% with %}
+            {% set transactions = recent_plus %}
+            {% include 'transactions_small_snippet.html'%}
+            {% endwith %}
+        </div>
+        <div class="span6">
+            <h2>Kredit</h2>
+            {% with %}
+            {% set transactions = recent_minus %}
+            {% include 'transactions_small_snippet.html'%}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}
