@@ -44,7 +44,7 @@
             <div class="btn-group pull-right">
                 {% if session.user %}
                 <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-user"></i> {{ user.first_name }}
+                    <i class="icon-user"></i> {{ session.user.first_name }}
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">

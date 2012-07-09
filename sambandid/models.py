@@ -62,7 +62,7 @@ class User(SaveMixIn, db.Model):
 
     def as_dict(self):
         return {'id': self.id, 'name': self.name, 'username': self.username, 'email': self.email, \
-                'account_status': self.account_status }
+                'account_status': self.account_status, 'first_name': self.first_name }
 
 
 class Beer(SaveMixIn, db.Model):
