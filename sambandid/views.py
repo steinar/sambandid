@@ -194,7 +194,7 @@ class TransactionRegistrationView(MethodView):
         transaction = Transaction(**form.data)
         transaction.registered_by = user
         transaction.save()
-        user.update_account_status()
+        transaction.user.update_account_status()
         flash(unicode('Færslan hefur verið bókfærð. Þakka þér, meistari.', 'utf-8'))
         return redirect(url_for("transactions"))
 
