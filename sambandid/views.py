@@ -204,7 +204,9 @@ app.add_url_rule('/transactions/add', view_func=TransactionRegistrationView.as_v
 @inject_user
 def status_overview(user=None):
     users = User.query.all()
-    return render_template('status_overview.html', users=users)
+
+    status_sum = sum(map(lambda x: x.account_status or 0, users))
+    return render_template('status_overview.html', users=users, status_sum=status_sum)
 
 
 

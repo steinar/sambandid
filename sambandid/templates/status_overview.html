@@ -2,7 +2,11 @@
 
 {% block content %}
 <h1>Sambandsstöðurnar</h1>
+<div class="alert alert-info">
+    Heildarstaða sambandsins er {{status_sum}} SKR
+</div>
 <h2>Agi verður að vera!</h2>
+
 
 <table class="table table-striped">
     <thead>
@@ -21,7 +25,11 @@
         </td>
         <td>
             <span class="pull-right">
-            {{ user.account_status }} SKR
+               {% if s %}
+                    {{ user.account_status }} SKR
+                {% else %}
+                    -
+                {% endif %}
             </span>
         </td>
     </tr>
