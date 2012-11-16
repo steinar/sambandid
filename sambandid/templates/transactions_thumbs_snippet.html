@@ -1,63 +1,65 @@
 {% for transaction in transactions %}
+<div class="container-fluid">
     <div class="row-fluid">
-            <div class="span1">
-                <a class="thumbnail">
-                    <img src="http://graph.facebook.com/{{transaction.user.username}}/picture"/>
-                </a>
-            </div>
-            <div class="span10">
-                <p>
-
-
-            {% if transaction.amount > 0 %}
-                <small>innlegg {{transaction.transaction_date|datetimeformat}}</small><br/>
-                <a rel="popover" data-content="{{ transaction.user.account_status}} ISK" data-original-title="Sambandsstaða">
+        <div class="span10">
+            <a class="thumbnail pull-left">
+                <img src="http://graph.facebook.com/{{transaction.user.username}}/picture"/>
+            </a>
+            <p>
+                {% if transaction.amount > 0 %}
+                <small>innlegg {{transaction.transaction_date|datetimeformat}}</small>
+                <br/>
+                <a rel="popover" data-content="{{ transaction.user.account_status}} ISK"
+                   data-original-title="Sambandsstaða">
                     <strong>{{ transaction.user.name }}</strong>
                 </a>
                 lagði inn
                 {% with %}
-                    {% set rand = [
-                    '. Kominn tími til.',
-                    ' og rétt slapp fyrir horn.',
-                    '. Það kom þá að því.',
-                    ' sem var víst aleigan.',
-                    '.',
-                    '. Margt smátt gerir eitt stórt.',
-                    '. Allt að koma.',
-                    ' í tilefni dagsins.',
-                    ' enda moldríkur.',
-                    ' enda fyrirmyndar meðlimur!',
-                    ]|random %}
-                    <a rel="popover" data-content="{{transaction.comment|striptags or 'Engin athugasemd'}}"
-                       data-original-title="Athugasemd">
-                        <strong>{{ transaction.amount }} ISK</strong></a>{{ rand }}
+                {% set rand = [
+                '. Kominn tími til.',
+                ' og rétt slapp fyrir horn.',
+                '. Það kom þá að því.',
+                ' sem var víst aleigan.',
+                '.',
+                '. Margt smátt gerir eitt stórt.',
+                '. Allt að koma.',
+                ' í tilefni dagsins.',
+                ' enda moldríkur.',
+                ' enda fyrirmyndar meðlimur!',
+                ]|random %}
+                <a rel="popover" data-content="{{transaction.comment|striptags or 'Engin athugasemd'}}"
+                   data-original-title="Athugasemd">
+                    <strong>{{ transaction.amount }} ISK</strong></a>{{ rand }}
                 {% endwith %}
                 <br/>
-            {% elif transaction.beer %}
-                <small>úttekt {{transaction.transaction_date|datetimeformat}}</small><br/>
-                <a rel="popover" data-content="{{ transaction.user.account_status}} ISK" data-original-title="Sambandsstaða">
+                {% elif transaction.beer %}
+                <small>úttekt {{transaction.transaction_date|datetimeformat}}</small>
+                <br/>
+                <a rel="popover" data-content="{{ transaction.user.account_status}} ISK"
+                   data-original-title="Sambandsstaða">
                     <strong>{{ transaction.user.name }}</strong>
                 </a>
                 {% with %}
-                    {% set rand = [
-                    'er ferlega sáttur með einn ískaldan',
-                    'sótti sér',
-                    'þambaði á mettíma',
-                    'laumaðist og náði einum',
-                    'skellti sér á eitt stk',
-                    'sturtaði í sig ísköldum',
-                    'er að sötra',
-                    'splæsti á sig einum',
-                    'er enn og aftur kominn með',
-                    ]|random %}
-                    {{ rand }}
-                    <a rel="popover" data-content="Ekki nema {{ transaction.beer.price}} ISK"
-                       data-original-title="Verð á {{transaction.beer.name}}">
-                        <strong>{{ transaction.beer.name }}</strong></a>.
+                {% set rand = [
+                'er ferlega sáttur með einn ískaldan',
+                'sótti sér',
+                'þambaði á mettíma',
+                'laumaðist og náði einum',
+                'skellti sér á eitt stk',
+                'sturtaði í sig ísköldum',
+                'er að sötra',
+                'splæsti á sig einum',
+                'er enn og aftur kominn með',
+                ]|random %}
+                {{ rand }}
+                <a rel="popover" data-content="Ekki nema {{ transaction.beer.price}} ISK"
+                   data-original-title="Verð á {{transaction.beer.name}}">
+                    <strong>{{ transaction.beer.name }}</strong></a>.
                 {% endwith %}
                 <br/>
-            {% endif %}
-            </div>
-        </p>
+                {% endif %}
+            </p>
+        </div>
     </div>
+</div>
 {% endfor %}
