@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>Sambandsstöðurnar</h1>
+<h2>Agi verður að vera!</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nafn</th>
+        <th>Sambandsstaða</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    {% with %}
+    {% set s = user.account_status %}
+    <tr>
+        <td>
+            {{ user }}
+        </td>
+        <td>
+            <span class="pull-right">
+            {{ user.account_status }} SKR
+            </span>
+        </td>
+    </tr>
+    {% endwith %}
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

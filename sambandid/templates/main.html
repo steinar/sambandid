@@ -68,6 +68,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="" href="{{url_for('beer_add')}}">Skrá bjór</a></li>
                             <li><a class="" href="{{url_for('recent_transactions')}}">Færsluyfirlit</a></li>
+                            <li><a class="" href="{{url_for('status_overview')}}"><span class="icon-wrench"></span> Sambandsstöðuyfirlit</a></li>
                             {# <li><a class="" href="{{url_for('transactionview.index_view')}}"><span class="icon-wrench"></span> Bókhaldið</a></li> #}
                             {# <li><a class="" href="{{url_for('userview.index_view')}}"><span class="icon-wrench"></span> Notendur</a></li> #}
                         </ul>
@@ -142,6 +143,7 @@
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-collapse.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-carousel.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-typeahead.js') }}"></script>
+
 <script language="javascript">
     $("a[rel=popover]")
             .popover()

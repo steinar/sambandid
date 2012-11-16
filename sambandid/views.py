@@ -200,6 +200,13 @@ class TransactionRegistrationView(MethodView):
 
 app.add_url_rule('/transactions/add', view_func=TransactionRegistrationView.as_view('transaction_add'))
 
+@app.route('/status-overview')
+@inject_user
+def status_overview(user=None):
+    users = User.query.all()
+    return render_template('status_overview.html', users=users)
+
+
 
 # Admin
 
