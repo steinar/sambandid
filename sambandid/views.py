@@ -162,8 +162,8 @@ def transactions(user=None):
 @app.route('/transactions/recent')
 @inject_user
 def recent_transactions(user=None):
-    recent_plus = Transaction.query.filter(Transaction.amount>0).order_by(Transaction.transaction_date.desc()).limit(10)
-    recent_minus = Transaction.query.filter(Transaction.amount<0).order_by(Transaction.transaction_date.desc()).limit(10)
+    recent_plus = Transaction.query.filter(Transaction.amount>0).order_by(Transaction.transaction_date.desc()).limit(20)
+    recent_minus = Transaction.query.filter(Transaction.amount<0).order_by(Transaction.transaction_date.desc()).limit(20)
     return render_template('recent_transactions.html', user=user, recent_minus=recent_minus, recent_plus=recent_plus)
 
 
