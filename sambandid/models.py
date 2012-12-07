@@ -100,6 +100,10 @@ class Beer(SaveMixIn, db.Model):
             return None
         return photos.url(self.image_path)
 
+    @property
+    def num_transactions(self):
+        return Transaction.query.filter_by(beer=self).count()
+
     @classmethod
     def all_active(cls):
         return Beer.query.filter_by(active=True).order_by('name')
