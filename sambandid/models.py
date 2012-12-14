@@ -61,7 +61,7 @@ class User(SaveMixIn, db.Model):
         return user
 
     def update_account_status(self):
-        amounts = map(lambda t: t.amount, Transaction.query.filter_by(user=self).get_all())
+        amounts = map(lambda t: t.amount, Transaction.query.filter_by(user=self).all())
         self.account_status = sum(amounts) if amounts else 0
         self.save()
 
