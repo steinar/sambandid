@@ -47,7 +47,7 @@ class User(SaveMixIn, db.Model):
 
     @classmethod
     def get_all(cls):
-        return User.query.all().order_by('name')
+        return User.query.order_by('name')
 
 
     @classmethod
