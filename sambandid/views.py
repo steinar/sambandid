@@ -203,10 +203,11 @@ app.add_url_rule('/transactions/add', view_func=TransactionRegistrationView.as_v
 @app.route('/status-overview')
 @inject_user
 def status_overview(user=None):
-    users = User.get_all()
-    status_sum = sum(map(lambda x: x.account_status or 0, users))*(-1)
     if 'refresh' in request.args:
         updates = [u.update_account_status() for u in User.query.all()]
+
+    users = User.get_all()
+    status_sum = sum(map(lambda x: x.account_status or 0, users))*(-1)
     return render_template('status_overview.html', users=users, status_sum=status_sum)
 
 
