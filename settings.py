@@ -5,10 +5,11 @@ import os
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
+    LOGFILE='/var/log/sambandid.log'
 
 class DevelopmentConfig(BaseConfig):
-    DEBUG = True
-    TESTING = True
+    DEBUG = TESTING = True
+    LOGFILE='sambandid.log'
 
 APP_PACKAGE = 'sambandid'
 

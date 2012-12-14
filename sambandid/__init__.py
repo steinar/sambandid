@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import datetime
+import logging
+from logging.handlers import RotatingFileHandler
 
 import settings
 import os
@@ -8,8 +11,6 @@ from flaskext.uploads import configure_uploads, IMAGES, UploadSet
 from kit.helpers import AppFactory
 from settings import DevelopmentConfig, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 from flaskext.oauth import OAuth
-from flaskext.script import Manager
-
 
 
 if os.environ.get('mode', 'dev') == 'production':
@@ -46,6 +47,22 @@ photos = UploadSet('photos', IMAGES)
 configure_uploads(app, (photos,))
 
 #admin = Admin(app)
+
+def setup_logging(app):
+    log_filename = app.config['LOGFILE']
+    file_handler = RotatingFileHandler(log_filename)
+    if app.config['DEBUG']:
+        file_handler.setLevel(logging.INFO)
+    else:
+        file_handler.setLevel(logging.ERROR)
+
+    kb_fmt = u'[%(asctime)s %(levelname)s] - %(processName)s (%(process)s) - (%(module)s:%(funcName)s:%(lineno)s) %(message)s'
+    kb_formatter = logging.Formatter(fmt=kb_fmt)
+    file_handler.setFormatter(kb_formatter)
+    app.logger.addHandler(file_handler)
+
+setup_logging(app)
+
 
 # Application's views
 from sambandid.filters import *
