@@ -46,6 +46,11 @@ class User(SaveMixIn, db.Model):
         return self.name and self.name.split(" ")[0] or ""
 
     @classmethod
+    def get_all(cls):
+        return User.query.get_all().order_by('name')
+
+
+    @classmethod
     def from_facebook(cls, me):
         user = User.query.filter_by(username=me.data['username']).first()
         if not user:
@@ -56,7 +61,7 @@ class User(SaveMixIn, db.Model):
         return user
 
     def update_account_status(self):
-        amounts = map(lambda t: t.amount, Transaction.query.filter_by(user=self).all())
+        amounts = map(lambda t: t.amount, Transaction.query.filter_by(user=self).get_all())
         self.account_status = sum(amounts) if amounts else 0
         self.save()
 

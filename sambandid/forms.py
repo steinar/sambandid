@@ -22,11 +22,11 @@ class BeerForm(Form):
 
 
 class BeerTransactionForm(Form):
-    user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.query.all())
+    user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.get_all())
     beer = QuerySelectField(u'Bjór', query_factory=lambda: Beer.all_active())
 
 
 class DepositTransactionForm(Form):
-    user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.query.all())
+    user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.get_all())
     amount = IntegerField(u'Upphæð')
     comment = TextAreaField(u'Skýring')
