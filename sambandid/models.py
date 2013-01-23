@@ -52,10 +52,10 @@ class User(SaveMixIn, db.Model):
 
     @classmethod
     def from_facebook(cls, me):
-        user = User.query.filter_by(username=me.data['username']).first()
+        user = User.query.filter(User.username.in_([me.data.get('username'), me.data.get('id')])).first()
         if not user:
             is_admin = User.query.count() == 0 # First user becomes admin
-            user = User(me.data['name'], me.data['username'], me.data['email'], is_admin)
+            user = User(me.data['name'], me.data.get('username') or me.data.get('id'), me.data['email'], is_admin)
             db.session.add(user)
             db.session.commit()
         return user

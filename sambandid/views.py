@@ -3,6 +3,7 @@ import os
 from werkzeug.utils import redirect
 from flask import send_from_directory
 from flask import session
+from flask.ext.oauth import OAuthException
 from flask.globals import request
 from flask.helpers import flash, url_for
 from flask.templating import render_template
@@ -69,7 +70,8 @@ def facebook_authorized(resp):
 
 
 @app.route('/logout')
-def logout():
+@app.errorhandler(OAuthException)
+def logout(sme=None):
     session.pop('user', None)
     session.pop('oauth_token', None)
     session.pop('_flashes', None)
