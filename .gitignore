@@ -1,2 +1,4 @@
 private.py
 *.pyc
+*.log
+*.egg*
