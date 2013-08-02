@@ -5,10 +5,10 @@
 <h2>Hver splæsir?</h2>
 <div class="row">
     {% for user in users %}
-    <div class="span3" align="center">
-        <a href="{{url_for('quick_transaction_beers', username=user.username)}}" class="thumbnail">
+    <div class="span3 thumbnail" align="center">
+        <a href="{{url_for('quick_transaction_beers', username=user.username)}}">
             <img src="http://graph.facebook.com/{{user.username}}/picture?type=large"/>
-        </a>
+        </a><br/>
         <a href="{{url_for('quick_transaction_beers', username=user.username)}}">{{ user.name }}</a>
     </div>
     {% if loop.index%4 == 0 %}
