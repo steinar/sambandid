@@ -5,8 +5,8 @@
 <h2>Hvað má bjóða þér?</h2>
 <div class="row">
     {% for beer in beers %}
-    <div class="span3 thumbnail" align="center">
-        <a href="{{url_for('quick_transaction_post', username=selected_user.username, beer_id=beer.id)}}">
+    <div class="span2 thumbnail" align="center">
+        <a href="{{url_for('quick_transaction_post', username=selected_user.username, beer_id=beer.id)}}" class="thumbnail">
             <img src="{{ beer.image_url }}" height="120"/>
         </a><br/>
         <a href="{{url_for('quick_transaction_post', username=selected_user.username, beer_id=beer.id)}}">{{ beer.name }}</a>
