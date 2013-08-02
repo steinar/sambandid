@@ -113,7 +113,6 @@ def favicon():
 
 class BeerAddView(MethodView):
     @inject_user
-    @only_admin
     def get(self, beer_id=None, user=None):
         if beer_id:
             beer = Beer.query.filter_by(id=beer_id).first()
@@ -123,7 +122,6 @@ class BeerAddView(MethodView):
         return render_template('beer_form.html', form=form)
 
     @inject_user
-    @only_admin
     def post(self, beer_id=None, user=None):
         form = BeerForm(request.form)
         if beer_id:
