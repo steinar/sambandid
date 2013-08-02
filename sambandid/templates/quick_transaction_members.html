@@ -10,7 +10,11 @@
             <img src="http://graph.facebook.com/{{user.username}}/picture?type=large"/>
         </a>
         <a href="{{url_for('quick_transaction_beers', username=user.username)}}">{{ user.name }}</a>
+        {{ loop.index%4 }}
     </div>
+    {% if loop.index%4 == 0 %}
+</div><div class="row">
+    {% endif %}
     {% endfor %}
 </div>
 <hr/>

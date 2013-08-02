@@ -11,6 +11,9 @@
         </a>
         <a href="{{url_for('quick_transaction_post', username=selected_user.username, beer_id=beer.id)}}">{{ beer.name }}</a>
     </div>
+    {% if loop.index%4 == 0 %}
+</div><div class="row">
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
