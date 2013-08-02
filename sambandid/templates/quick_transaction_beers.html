@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>Nú líst mér á þig {{ selected_user.first_name }}</h1>
+<h2>Hvað má bjóða þér?</h2>
+<div class="row">
+    {% for beer in beers %}
+    <div class="span3" align="center">
+        <a href="{{url_for('quick_transaction_post', username=selected_user.username, beer_id=beer.id)}}">
+            <img src="{{ beer.image_url }}" height="120"/>
+        </a>
+        <a href="{{url_for('quick_transaction_post', username=selected_user.username, beer_id=beer.id)}}">{{ beer.name }}</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

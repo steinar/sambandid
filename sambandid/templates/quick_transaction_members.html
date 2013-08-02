@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>Skrá úttekt</h1>
+<h2>Hver splæsir?</h2>
+<div class="row">
+    {% for user in users %}
+    <div class="span3" align="center">
+        <a href="{{url_for('quick_transaction_beers', username=user.username)}}" class="thumbnail">
+            <img src="http://graph.facebook.com/{{user.username}}/picture?type=large"/>
+        </a>
+        <a href="{{url_for('quick_transaction_beers', username=user.username)}}">{{ user.name }}</a>
+    </div>
+    {% endfor %}
+</div>
+<hr/>
+<div class="alert alert-warn">
+    <strong>Ekki hér?</strong> Eingöngu félagar sem hafa verið virkir upp á síðastið birtast hérna.
+        <a href="{{url_for('transaction_add')}}">Kíktu á bókfærslusíðuna</a> til að koma þér í þann hóp.
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import date, timedelta
 import os
 from werkzeug.utils import redirect
 from flask import send_from_directory
@@ -212,6 +213,36 @@ def status_overview(user=None):
     status_sum = sum(map(lambda x: x.account_status or 0, users))*(-1)
     return render_template('status_overview.html', users=users, status_sum=status_sum)
 
+
+
+@app.route('/quick-transaction')
+@inject_user
+def quick_transaction(user=None):
+    since = (date.today()-timedelta(weeks=16)).isoformat()
+    users = (t.user for t in \
+             Transaction.query.filter(Transaction.transaction_date >= since)\
+                 .join(Transaction.user).group_by('user_id').order_by(User.name).all())
+    return render_template('quick_transaction_members.html', users=users)
+
+@app.route('/quick-transaction/<string:username>/')
+@inject_user
+def quick_transaction_beers(user=None, username=None):
+    selected_user = get_user_object(username)
+    beers = Beer.all_active()
+    beers_inactive = Beer.all_inactive()
+    return render_template('quick_transaction_beers.html', beers=beers, beers_inactive=beers_inactive,
+                           selected_user=selected_user)
+
+@app.route('/quick-transaction/<string:username>/<int:beer_id>/')
+@inject_user
+def quick_transaction_post(user=None, username=None, beer_id=None):
+    selected_user = get_user_object(username)
+    beer = Beer.query.filter_by(id=beer_id).first()
+    transaction = Transaction(user=selected_user, registered_by=user, beer=beer)
+    transaction.save()
+    transaction.user.update_account_status()
+    flash(u'Skráði %s á %s' % (beer.name, selected_user.name))
+    return redirect(url_for('quick_transaction'))
 
 
 # Admin
