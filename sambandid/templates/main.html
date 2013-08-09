@@ -66,16 +66,13 @@
                 <ul class="nav">
                     <li><a href="{{url_for('quick_transaction')}}">Skrá úttekt</a></li>
                     <li><a href="{{url_for('beers')}}">Lagerinn</a></li>
-                    <li><a href="{{url_for('transaction_add')}}">Bókfæra</a></li>
-                    <li><a href="{{url_for('transactions')}}">Minn reikningur</a></li>
+
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Umsýslan</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bókfærslan</a>
                         <ul class="dropdown-menu">
-                            <li><a class="" href="{{url_for('beer_add')}}">Skrá bjór</a></li>
-                            <li><a class="" href="{{url_for('recent_transactions')}}">Færsluyfirlit</a></li>
-                            <li><a class="" href="{{url_for('status_overview')}}"><span class="icon-wrench"></span> Sambandsstöðuyfirlit</a></li>
-                            {# <li><a class="" href="{{url_for('transactionview.index_view')}}"><span class="icon-wrench"></span> Bókhaldið</a></li> #}
-                            {# <li><a class="" href="{{url_for('userview.index_view')}}"><span class="icon-wrench"></span> Notendur</a></li> #}
+                            <li><a href="{{url_for('transaction_add')}}">Skrá innlegg eða úttekt</a></li>
+                            <li><a href="{{url_for('recent_transactions')}}">Sjóðsreikningurinn</a></li>
+                            <li><a href="{{url_for('status_overview')}}">Sambandsstöðuyfirlit</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -103,19 +100,15 @@
             <p>Hér eru allir vinir. Ekki með aðgang? Skráðu þig! Áttu engan pening? Við lánum þér!</p>
 
             {% if user %}
+                <a class="btn btn-large btn-primary" href="{{url_for('quick_transaction_beers', username=user.username)}}">
+                    <span class="icon-user"></span> Skrá úttekt á mig (<strong>{{user.first_name}})</strong></a>
+                Eða kannski <a href="{{url_for('quick_transaction')}}">einhvern annan</a>?
                 {% include 'user_workspace.html' %}
             {% endif %}
 
 
         </div>
     </div>
-    <!--<div class="span2">-->
-        <!--<img src="{{ url_for('static', filename='img/sambandid.png') }}" width="150"/>-->
-        <!--<object width="150" height="100">-->
-            <!--<param name="movie" value="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" /><param name="allowscriptaccess" value="always" />-->
-            <!--<embed src="http://www.gogoyoko.com/object/widget_player.swf?songId=84759" type="application/x-shockwave-flash" allowscriptaccess="always" width="150" height="100" />-->
-        <!--</object>-->
-    <!--</div>-->
     <h2>Nýlegar færslur</h2>
     <div class="row">
         <div class="span12">

@@ -142,11 +142,13 @@ class Transaction(SaveMixIn, db.Model):
 
     transaction_date = db.Column(db.DateTime)
 
-    def __init__(self, user=None, registered_by=None, beer=None, amount=None, comment=''):
+    def __init__(self, user=None, registered_by=None, beer=None, amount=None, comment='', quantity=1):
         self.user = user
         self.registered_by = registered_by
         self.beer = beer
         self.amount = beer and beer.price and -beer.price or amount or None
+        if self.amount:
+            self.amount *= int(quantity)
         self.transaction_date = datetime.utcnow()
         self.comment = comment
 

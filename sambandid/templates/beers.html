@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Lagerinn</h1>
-
+<a class="btn btn-primary" href="{{url_for('beer_add')}}"><span class="icon-plus"></span> Skrá bjór</a>
     {% with %}
         {% set beers = beers %}
         {% include 'beer_table_snippet.html' %}

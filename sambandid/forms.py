@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import TextField, validators, IntegerField, FloatField
+from wtforms import TextField, validators, IntegerField, FloatField, SelectField
 from wtforms.ext.sqlalchemy.orm import Form
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.fields import TextAreaField, FileField
@@ -24,6 +24,7 @@ class BeerForm(Form):
 class BeerTransactionForm(Form):
     user = QuerySelectField(u'Félagsmaður', query_factory=lambda: User.get_all())
     beer = QuerySelectField(u'Bjór', query_factory=lambda: Beer.all_active())
+    quantity = SelectField(u'Fjöldi', default=1, choices=[(x, x) for x in range(1, 13)])
 
 
 class DepositTransactionForm(Form):

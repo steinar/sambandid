@@ -8,6 +8,7 @@
     <form method="post" action="{{url_for('transaction_add')}}" class="well">
         {{ render_field(beer_form.user) }}
         {{ render_field(beer_form.beer) }}
+        {{ render_field(beer_form.quantity) }}
         <p><button type="submit" name="beer" data-loading-text="augnablik..." class="btn  btn-primary"><span class="icon-ok"></span> Skrá drykkju</button></p>
     </form>
 </div>
